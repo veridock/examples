@@ -1,27 +1,33 @@
 # Veridock PWA.SVG Applications
 
 A collection of Progressive Web Applications (PWAs) built entirely within SVG files. Each application is a single, self-contained `.svg` file that includes HTML, CSS, and JavaScript.
-+ PWA inside SVG file
-+ PWA based on SVG file
-+ HTML inside SVG file
-+ HTML based on SVG file
 
 ## 📱 Featured Applications
 
 ### 1. 📝 Notes App
-A simple note-taking application with auto-save functionality.
+A simple note-taking application with auto-save functionality and local storage.
 - [View App](note/note.pwa.svg)
 - [Documentation](note/README.md)
 
 ### 2. 🔳 QR Code Generator
-Generate QR codes from text or URLs.
+Generate and customize QR codes from text or URLs with real-time preview.
 - [View App](qrgen/qrgen.pwa.svg)
 - [Documentation](qrgen/README.md)
 
-### 3. ⏱️ Stopwatch
-A precise stopwatch with lap time functionality.
+### 3. ⏱️ Stopwatch (Basic)
+A precise stopwatch with start, stop, and reset functionality.
 - [View App](stoper/stoper.pwa.svg)
 - [Documentation](stoper/README.md)
+
+### 4. ⏱️ Stopwatch 2 (Enhanced)
+Advanced stopwatch with lap times, PWA features, and modern UI.
+- [View App](stoper2/stoper.pwa.svg)
+- [HTML Version](stoper2/stoper.pwa.html)
+
+### 5. ⏱️ Stopwatch 3 (Premium)
+Feature-rich stopwatch with multiple timers, themes, and analytics.
+- [View App](stoper3/stoper.pwa.svg)
+- [HTML Version](stoper3/stoper.pwa.html)
 
 ## 🚀 Getting Started
 
@@ -46,6 +52,8 @@ A precise stopwatch with lap time functionality.
    http://localhost:8000/examples/note/note.pwa.svg
    http://localhost:8000/examples/qrgen/qrgen.pwa.svg
    http://localhost:8000/examples/stoper/stoper.pwa.svg
+   http://localhost:8000/examples/stoper2/stoper.pwa.svg
+   http://localhost:8000/examples/stoper3/stoper.pwa.svg
    ```
 
 ## 🧪 Testing
@@ -53,9 +61,15 @@ A precise stopwatch with lap time functionality.
 ### Unit Tests
 Run unit tests for a specific application:
 ```bash
+# Run tests for all applications
 cd examples/note && node test.js
 cd examples/qrgen && node test.js
 cd examples/stoper && node test.js
+cd examples/stoper2 && node test.js
+cd examples/stoper3 && node test.js
+
+# Or run all tests from the root directory
+make test
 ```
 
 ### End-to-End Testing
@@ -72,9 +86,11 @@ npm test
 ```
 veridock/
 ├── examples/           # Example PWA.SVG applications
-│   ├── note/           # Notes application
-│   ├── qrgen/          # QR Code Generator
-│   └── stoper/         # Stopwatch
+│   ├── note/           # 📝 Notes application
+│   ├── qrgen/          # 🔳 QR Code Generator
+│   ├── stoper/         # ⏱️ Basic Stopwatch
+│   ├── stoper2/        # ⏱️ Enhanced Stopwatch with PWA features
+│   └── stoper3/        # ⏱️ Premium Stopwatch with analytics
 ├── tests/              # Test files
 ├── docs/               # Documentation
 └── CONTRIBUTING.md     # Contribution guidelines

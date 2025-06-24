@@ -90,14 +90,39 @@ deploy: test build
 	git push $(GIT_REMOTE) $(shell git rev-parse --abbrev-ref HEAD)
 	@echo "✅ Deployment complete!"
 
-# Push changes to remote repository
+# Push changes to remote repository with auto-generated message
 push:
-	@echo "🚀 Pushing changes to remote..."
+	@echo "🚀 Preparing to push changes..."
 	git add .
-	git status
-	@read -p "Enter commit message: " message; \
-	git commit -m "$$message"
-	git push
+	@if git diff --cached --quiet; then \
+		echo "No changes to commit"; \
+		exit 0; \
+	fi
+	@echo "🚀 Changes to be committed:"
+	@git status -s
+	@echo ""
+	@echo "📦 Auto-generating commit message..."
+	@echo ""
+	@if git diff --cached --name-status | grep -q '^[A|M]\s.*\.pwa\.svg'; then \
+		echo "🔧 Updated SVG PWA applications:"; \
+		git diff --cached --name-status | grep '\.pwa\.svg' | sed 's/^[A-Z]\s*/  • /'; \
+	fi
+	@if git diff --cached --name-status | grep -q '^[A|M]\s.*\.js'; then \
+		echo "🛠️  Updated JavaScript files:"; \
+		git diff --cached --name-status | grep '\.js' | sed 's/^[A-Z]\s*/  • /'; \
+	fi
+	@if git diff --cached --name-status | grep -q '^[A|M]\s.*\.md'; then \
+		echo "📄 Updated documentation:"; \
+		git diff --cached --name-status | grep '\.md' | sed 's/^[A-Z]\s*/  • /'; \
+	fi
+	@echo ""
+	@read -p "📝 Press Enter to continue with auto-generated message or type a custom message: " custom_msg; \
+	if [ -z "$$custom_msg" ]; then \
+		git commit -m "🔧 Update project files" -m "$(shell git diff --cached --name-status | sed 's/^/• /' | head -5)" && \
+		git push; \
+	else \
+		git commit -m "$$custom_msg" && git push; \
+	fi
 
 # Run all tests before committing
 pre-commit: test lint
