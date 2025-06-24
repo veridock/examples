@@ -1,0 +1,257 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+     viewBox="0 0 400 400"
+     width="300" height="300"
+     data-pwa-version="1.0"
+     data-app-id="svg-pwa-stopwatch-demo">
+
+    <!-- PWA Manifest embedded -->
+    <metadata>
+        <pwa-manifest>{
+            "name": "SVG-PWA Stopwatch",
+            "short_name": "Stopwatch",
+            "description": "Demonstracja możliwości SVG-PWA",
+            "start_url": "./",
+            "display": "standalone",
+            "theme_color": "#667eea",
+            "background_color": "#764ba2",
+            "icons": [{"src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDQwMCA0MDAiPjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iMTUwIiBmaWxsPSIjNjY3ZWVhIi8+PC9zdmc+", "sizes": "512x512", "type": "image/svg+xml"}]
+            }</pwa-manifest>
+    </metadata>
+
+    <!-- Visual Layer -->
+    <defs>
+        <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea"/>
+            <stop offset="100%" style="stop-color:#764ba2"/>
+        </linearGradient>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="400" height="400" fill="url(#mainGradient)" opacity="0.1"/>
+
+    <!-- Main Timer Ring -->
+    <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="8"/>
+    <circle id="progress-ring" cx="200" cy="200" r="150" fill="none" stroke="#4CAF50"
+            stroke-width="8" stroke-dasharray="942" stroke-dashoffset="942"
+            stroke-linecap="round" filter="url(#glow)" transform="rotate(-90 200 200)"/>
+
+    <!-- Inner Timer Ring (minutes) -->
+    <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="4"/>
+    <circle id="minutes-ring" cx="200" cy="200" r="120" fill="none" stroke="#FF9800"
+            stroke-width="4" stroke-dasharray="754" stroke-dashoffset="754"
+            stroke-linecap="round" transform="rotate(-90 200 200)"/>
+
+    <!-- Center Display -->
+    <circle cx="200" cy="200" r="80" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+
+    <!-- Time Display -->
+    <text id="timer-display" x="200" y="190" text-anchor="middle"
+          font-size="28" font-family="monospace" fill="white" font-weight="bold">00:00</text>
+    <text id="ms-display" x="200" y="215" text-anchor="middle"
+          font-size="16" font-family="monospace" fill="rgba(255,255,255,0.7)">.00</text>
+
+    <!-- Control Buttons -->
+    <g id="controls">
+        <!-- Start/Stop Button -->
+        <circle id="start-stop-btn" cx="200" cy="320" r="35" fill="#4CAF50"
+                stroke="rgba(255,255,255,0.3)" stroke-width="2" cursor="pointer"
+                onmouseover="this.setAttribute('r', '37')"
+                onmouseout="this.setAttribute('r', '35')"
+                onclick="stopwatch.toggle()"/>
+        <text id="start-stop-text" x="200" y="328" text-anchor="middle"
+              font-size="14" fill="white" font-weight="bold" pointer-events="none">START</text>
+
+        <!-- Reset Button -->
+        <circle id="reset-btn" cx="120" cy="320" r="25" fill="#f44336"
+                stroke="rgba(255,255,255,0.3)" stroke-width="2" cursor="pointer"
+                onmouseover="this.setAttribute('r', '27')"
+                onmouseout="this.setAttribute('r', '25')"
+                onclick="stopwatch.reset()"/>
+        <text x="120" y="326" text-anchor="middle" font-size="12" fill="white"
+              font-weight="bold" pointer-events="none">RESET</text>
+
+        <!-- Lap Button -->
+        <circle id="lap-btn" cx="280" cy="320" r="25" fill="#2196F3"
+                stroke="rgba(255,255,255,0.3)" stroke-width="2" cursor="pointer"
+                onmouseover="this.setAttribute('r', '27')"
+                onmouseout="this.setAttribute('r', '25')"
+                onclick="stopwatch.lap()"/>
+        <text x="280" y="326" text-anchor="middle" font-size="12" fill="white"
+              font-weight="bold" pointer-events="none">LAP</text>
+    </g>
+
+    <!-- Embedded PWA Logic -->
+    <script type="application/javascript"><![CDATA[
+    class SVGPWAStopwatch {
+        constructor() {
+            this.time = 0;
+            this.milliseconds = 0;
+            this.isRunning = false;
+            this.interval = null;
+            this.laps = [];
+
+            // DOM elements
+            this.display = document.getElementById('timer-display');
+            this.msDisplay = document.getElementById('ms-display');
+            this.progressRing = document.getElementById('progress-ring');
+            this.minutesRing = document.getElementById('minutes-ring');
+            this.startStopText = document.getElementById('start-stop-text');
+            this.startStopBtn = document.getElementById('start-stop-btn');
+
+            this.loadState();
+            this.updateDisplay();
+
+            console.log('🏃‍♂️ SVG-PWA Stopwatch initialized!');
+        }
+
+        toggle() {
+            if (this.isRunning) {
+                this.stop();
+            } else {
+                this.start();
+            }
+            this.saveState();
+        }
+
+        start() {
+            this.isRunning = true;
+            this.startStopText.textContent = 'STOP';
+            this.startStopBtn.setAttribute('fill', '#f44336');
+
+            this.interval = setInterval(() => {
+                this.milliseconds += 10;
+                if (this.milliseconds >= 1000) {
+                    this.time++;
+                    this.milliseconds = 0;
+                }
+                this.updateDisplay();
+            }, 10);
+
+            // PWA Notification
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('Stopwatch Started', {
+                    body: 'Timer is now running',
+                    icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDQwMCA0MDAiPjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iMTUwIiBmaWxsPSIjNjY3ZWVhIi8+PC9zdmc+'
+                });
+            }
+        }
+
+        stop() {
+            this.isRunning = false;
+            this.startStopText.textContent = 'START';
+            this.startStopBtn.setAttribute('fill', '#4CAF50');
+            clearInterval(this.interval);
+            this.saveState();
+        }
+
+        reset() {
+            this.stop();
+            this.time = 0;
+            this.milliseconds = 0;
+            this.laps = [];
+            this.updateDisplay();
+            this.saveState();
+            this.updateHistory();
+        }
+
+        lap() {
+            if (this.isRunning) {
+                const lapTime = {
+                    time: this.time,
+                    milliseconds: this.milliseconds,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                this.laps.push(lapTime);
+                this.saveState();
+                this.updateHistory();
+            }
+        }
+
+        updateDisplay() {
+            const minutes = Math.floor(this.time / 60);
+            const seconds = this.time % 60;
+            const ms = Math.floor(this.milliseconds / 10);
+
+            this.display.textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            this.msDisplay.textContent = `.${ms.toString().padStart(2, '0')}`;
+
+            // Update progress rings
+            const secondsCircumference = 942;
+            const minutesCircumference = 754;
+
+            // Seconds ring (0-60 seconds)
+            const secondsProgress = (seconds + this.milliseconds/1000) / 60;
+            const secondsOffset = secondsCircumference - (secondsProgress * secondsCircumference);
+            this.progressRing.style.strokeDashoffset = secondsOffset;
+
+            // Minutes ring (0-60 minutes)
+            const minutesProgress = (minutes % 60) / 60;
+            const minutesOffset = minutesCircumference - (minutesProgress * minutesCircumference);
+            this.minutesRing.style.strokeDashoffset = minutesOffset;
+
+            // Color coding
+            if (minutes >= 10) {
+                this.progressRing.setAttribute('stroke', '#f44336'); // Red for >10min
+            } else if (minutes >= 5) {
+                this.progressRing.setAttribute('stroke', '#FF9800'); // Orange for >5min
+            } else {
+                this.progressRing.setAttribute('stroke', '#4CAF50'); // Green for <5min
+            }
+        }
+
+        saveState() {
+            const state = {
+                time: this.time,
+                milliseconds: this.milliseconds,
+                isRunning: this.isRunning,
+                laps: this.laps,
+                lastSaved: Date.now()
+            };
+            localStorage.setItem('svg-pwa-stopwatch', JSON.stringify(state));
+        }
+
+        loadState() {
+            const saved = localStorage.getItem('svg-pwa-stopwatch');
+            if (saved) {
+                const state = JSON.parse(saved);
+                this.time = state.time || 0;
+                this.milliseconds = state.milliseconds || 0;
+                this.laps = state.laps || [];
+                this.updateHistory();
+
+                // Restore running state if was running recently
+                if (state.isRunning && Date.now() - state.lastSaved < 10000) {
+                    this.start();
+                }
+            }
+        }
+
+        updateHistory() {
+            const historyDiv = parent.document.getElementById('lap-history');
+            if (historyDiv) {
+                historyDiv.innerHTML = this.laps.map((lap, i) =>
+                    `<div class="history-item">Lap ${i+1}: ${Math.floor(lap.time/60).toString().padStart(2,'0')}:${(lap.time%60).toString().padStart(2,'0')}.${Math.floor(lap.milliseconds/10).toString().padStart(2,'0')} (${lap.timestamp})</div>`
+                ).join('');
+            }
+        }
+    }
+
+    // Initialize when DOM is ready
+    const stopwatch = new SVGPWAStopwatch();
+
+    // Export to parent window for external controls
+    if (typeof parent !== 'undefined' && parent.window) {
+        parent.window.stopwatch = stopwatch;
+    }
+]]></script>
+</svg>
+
