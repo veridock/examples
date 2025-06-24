@@ -2,6 +2,24 @@
 
 A collection of Progressive Web Applications (PWAs) built entirely within SVG files. Each application is a single, self-contained `.svg` file that includes HTML, CSS, and JavaScript.
 
+plik #SVG + funkcje #PWA = #veriDock - Kompaktowa aplikacja w jednym pliku SVG
++ Minimalistyczny rozmiar i elastyczność SVG z zaawansowaną funkcjonalnością PWA, tworząc nowoczesną, łatwą w użyciu aplikację, działającą zarówno offline, jak i online.
++ Lekka, łatwa do przesyłania (np. przez email) oraz kompatybilna z nowoczesnymi przeglądarkami.
+
+Dzięki temu rozwiązaniu użytkownicy nie muszą pobierać dodatkowych zasobów z zewnętrznych serwerów, co przyspiesza ładowanie aplikacji.
+
+Pełna funkcjonalność PWA
+
+Integracja z funkcjami Progressive Web App (PWA), w tym Service Worker (offline, cache), App Manifest (instalacja, ikony, skróty), powiadomienia, wskaźniki online/offline oraz wsparcie dla funkcji takich jak Wake Lock i Badging API.
+
+Umożliwia instalację aplikacji na urządzeniach mobilnych, automatyczne działanie offline, przechowywanie stanu aplikacji między sesjami oraz otrzymywanie powiadomień systemowych.
+
+Zaawansowane funkcje interaktywne i analityczne
+Wbudowane animacje SVG, efekty hover, skróty klawiaturowe, śledzenie użytkowania (Analytics), eksportowanie wyników oraz monitorowanie wydajności aplikacji.
+
+Obsługuje dynamiczne aktualizacje w czasie rzeczywistym, responsywny design, przywracanie stanu po restarcie oraz wymianę danych z innymi aplikacjami.
+
+
 ## 📱 Featured Applications
 
 ### 1. 📝 Notes App
