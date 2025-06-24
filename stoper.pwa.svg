@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+
     <circle cx="200" cy="200" r="150" fill="none" stroke="#ddd" stroke-width="20"/>
     <circle id="progress" cx="200" cy="200" r="150" fill="none" stroke="#667eea"
             stroke-width="20" stroke-dasharray="942" stroke-dashoffset="942"/>
@@ -7,7 +8,7 @@
 
     <rect x="150" y="300" width="100" height="50" rx="25" fill="#4CAF50" onclick="timer.toggle()"/>
     <text x="200" y="335" text-anchor="middle" fill="white" font-size="18">START</text>
-
+    4d
     <script><![CDATA[
     class Timer {
       constructor() {
