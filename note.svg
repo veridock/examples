@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <foreignObject x="0" y="0" width="100%" height="100%">
+        <xhtml:div style="height: 100vh; display: flex; flex-direction: column;">
+            <xhtml:header style="background: #333; color: white; padding: 1rem;">
+                <xhtml:h1>📝 Notatnik SVG-PWA</xhtml:h1>
+            </xhtml:header>
+            <xhtml:main style="flex: 1; padding: 1rem;">
+                <xhtml:textarea id="notepad" style="width: 100%; height: 100%; border: none; resize: none;"></xhtml:textarea>
+            </xhtml:main>
+        </xhtml:div>
+    </foreignObject>
+
+    <script><![CDATA[
+    class Notepad {
+      constructor() {
+        this.textarea = document.getElementById('notepad');
+        this.load();
+        this.textarea.addEventListener('input', () => this.save());
+      }
+
+      save() {
+        localStorage.setItem('notepad-content', this.textarea.value);
+      }
+
+      load() {
+        this.textarea.value = localStorage.getItem('notepad-content') || '';
+      }
+    }
+
+    new Notepad();
+  ]]></script>
+</svg>

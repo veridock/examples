@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" r="150" fill="none" stroke="#ddd" stroke-width="20"/>
+    <circle id="progress" cx="200" cy="200" r="150" fill="none" stroke="#667eea"
+            stroke-width="20" stroke-dasharray="942" stroke-dashoffset="942"/>
+
+    <text id="timer-display" x="200" y="200" text-anchor="middle" font-size="48">00:00</text>
+
+    <rect x="150" y="300" width="100" height="50" rx="25" fill="#4CAF50" onclick="timer.toggle()"/>
+    <text x="200" y="335" text-anchor="middle" fill="white" font-size="18">START</text>
+
+    <script><![CDATA[
+    class Timer {
+      constructor() {
+        this.time = 0;
+        this.isRunning = false;
+        this.interval = null;
+        this.display = document.getElementById('timer-display');
+        this.progress = document.getElementById('progress');
+      }
+
+      toggle() {
+        if (this.isRunning) {
+          this.stop();
+        } else {
+          this.start();
+        }
+      }
+
+      start() {
+        this.isRunning = true;
+        this.interval = setInterval(() => {
+          this.time++;
+          this.updateDisplay();
+        }, 1000);
+      }
+
+      stop() {
+        this.isRunning = false;
+        clearInterval(this.interval);
+      }
+
+      updateDisplay() {
+        const minutes = Math.floor(this.time / 60);
+        const seconds = this.time % 60;
+        this.display.textContent =
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        // Update progress ring
+        const circumference = 942;
+        const progress = (this.time % 60) / 60;
+        const offset = circumference - (progress * circumference);
+        this.progress.style.strokeDashoffset = offset;
+      }
+    }
+
+    const timer = new Timer();
+  ]]></script>
+</svg>
