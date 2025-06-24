@@ -14,18 +14,31 @@ Generate and customize QR codes from text or URLs with real-time preview.
 - [View App](qrgen/qrgen.pwa.svg)
 - [Documentation](qrgen/README.md)
 
-### 3. ⏱️ Stopwatch (Basic)
-A precise stopwatch with start, stop, and reset functionality.
+### 3. ⏱️ Basic Stopwatch
+A simple stopwatch with second-precision timing and clean interface.
+- Start/Stop and Reset functionality
+- Progress ring visualization
+- Minimalist design
 - [View App](stoper/stoper.pwa.svg)
 - [Documentation](stoper/README.md)
 
-### 4. ⏱️ Stopwatch 2 (Enhanced)
-Advanced stopwatch with lap times, PWA features, and modern UI.
+### 4. ⏱️ Enhanced Stopwatch (PWA)
+Feature-rich stopwatch with millisecond precision and PWA capabilities.
+- Start/Stop, Reset, and Lap functionality
+- Millisecond precision timing
+- Animated progress rings (seconds and minutes)
+- PWA features (installable, works offline)
+- Modern gradient UI with smooth animations
 - [View App](stoper2/stoper.pwa.svg)
 - [HTML Version](stoper2/stoper.pwa.html)
 
-### 5. ⏱️ Stopwatch 3 (Premium)
-Feature-rich stopwatch with multiple timers, themes, and analytics.
+### 5. ⏱️ Premium Stopwatch (Advanced)
+Advanced stopwatch with additional features for power users.
+- All features from Enhanced version
+- Multiple timer presets
+- Theme support (light/dark mode)
+- Advanced analytics and statistics
+- Export/Import functionality
 - [View App](stoper3/stoper.pwa.svg)
 - [HTML Version](stoper3/stoper.pwa.html)
 
