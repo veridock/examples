@@ -1,4 +1,4 @@
-.PHONY: help install test test-watch lint format clean build serve deploy
+.PHONY: help install test test-watch lint format clean build serve deploy push
 
 # Project information
 PROJECT_NAME := veridock
@@ -89,6 +89,15 @@ deploy: test build
 	@echo "📦 Pushing to $(GIT_REMOTE) $(shell git rev-parse --abbrev-ref HEAD)"
 	git push $(GIT_REMOTE) $(shell git rev-parse --abbrev-ref HEAD)
 	@echo "✅ Deployment complete!"
+
+# Push changes to remote repository
+push:
+	@echo "🚀 Pushing changes to remote..."
+	git add .
+	git status
+	@read -p "Enter commit message: " message; \
+	git commit -m "$$message"
+	git push
 
 # Run all tests before committing
 pre-commit: test lint
