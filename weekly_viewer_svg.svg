@@ -1,0 +1,531 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+  <!-- Definicje stylów -->
+  <defs>
+    <style>
+      .container { font-family: 'Arial', sans-serif; }
+      .header { fill: white; font-size: 28px; font-weight: bold; text-anchor: middle; }
+      .subtitle { fill: white; font-size: 16px; text-anchor: middle; opacity: 0.9; }
+      .card { fill: white; stroke: none; rx: 15; }
+      .card-shadow { fill: rgba(0,0,0,0.1); rx: 15; }
+      .nav-btn { fill: #2563eb; stroke: none; rx: 8; cursor: pointer; }
+      .nav-btn:hover { fill: #1d4ed8; }
+      .nav-text { fill: white; font-size: 14px; font-weight: bold; text-anchor: middle; cursor: pointer; }
+      .week-title { fill: #1e293b; font-size: 20px; font-weight: bold; text-anchor: middle; }
+      .day-card { fill: #f8fafc; stroke: #e2e8f0; stroke-width: 2; rx: 10; }
+      .day-header { fill: #2563eb; font-size: 14px; font-weight: bold; text-anchor: middle; }
+      .day-date { fill: #64748b; font-size: 12px; text-anchor: middle; }
+      .day-hours { fill: #059669; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .entry-item { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1; rx: 5; }
+      .entry-text { fill: #374151; font-size: 10px; }
+      .entry-time { fill: #6b7280; font-size: 9px; }
+      .entry-category { fill: #2563eb; font-size: 9px; font-weight: bold; }
+      .export-btn { fill: #10b981; stroke: none; rx: 8; cursor: pointer; }
+      .export-btn:hover { fill: #059669; }
+      .import-btn { fill: #f59e0b; stroke: none; rx: 8; cursor: pointer; }
+      .import-btn:hover { fill: #d97706; }
+      .total-card { fill: #ecfdf5; stroke: #10b981; stroke-width: 2; rx: 10; }
+      .total-value { fill: #059669; font-size: 24px; font-weight: bold; text-anchor: middle; }
+      .total-label { fill: #059669; font-size: 12px; text-anchor: middle; }
+      .empty-day { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 5,5; rx: 10; }
+      .empty-text { fill: #94a3b8; font-size: 11px; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- Nagłówek -->
+  <rect class="card-shadow" x="22" y="22" width="956" height="80"/>
+  <rect class="card" x="20" y="20" width="960" height="80" fill="url(#headerGradient)"/>
+  <defs>
+    <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <text class="header" x="500" y="45">📅 Przeglądarka Tygodniowa</text>
+  <text class="subtitle" x="500" y="70">Ewidencja czasu pracy - widok tygodniowy</text>
+
+  <!-- Nawigacja tygodnia -->
+  <g id="weekNavigation">
+    <rect class="nav-btn" x="50" y="120" width="80" height="35" id="prevWeekBtn"/>
+    <text class="nav-text" x="90" y="142">← Poprzedni</text>
+    
+    <text class="week-title" x="500" y="142" id="weekTitle">Tydzień: 6-12 stycznia 2025</text>
+    
+    <rect class="nav-btn" x="870" y="120" width="80" height="35" id="nextWeekBtn"/>
+    <text class="nav-text" x="910" y="142">Następny →</text>
+  </g>
+
+  <!-- Podsumowanie tygodnia -->
+  <g id="weekSummary">
+    <rect class="total-card" x="400" y="170" width="200" height="60"/>
+    <text class="total-value" x="500" y="195" id="weekTotalHours">0.0</text>
+    <text class="total-label" x="500" y="215">Godzin w tygodniu</text>
+  </g>
+
+  <!-- Przyciski eksportu/importu -->
+  <g id="actionButtons">
+    <rect class="export-btn" x="50" y="170" width="120" height="35" id="exportWeekBtn"/>
+    <text class="nav-text" x="110" y="192">📊 Eksport CSV</text>
+    
+    <rect class="import-btn" x="190" y="170" width="120" height="35" id="importBtn"/>
+    <text class="nav-text" x="250" y="192">📂 Import CSV</text>
+    
+    <rect class="nav-btn" x="830" y="170" width="120" height="35" id="clearWeekBtn" fill="#ef4444"/>
+    <text class="nav-text" x="890" y="192">🗑️ Wyczyść</text>
+  </g>
+
+  <!-- Siatka dni tygodnia -->
+  <g id="weekGrid">
+    <!-- Poniedziałek -->
+    <g id="day0">
+      <rect class="day-card" x="20" y="250" width="130" height="500"/>
+      <text class="day-header" x="85" y="275">Poniedziałek</text>
+      <text class="day-date" x="85" y="295" id="date0">06.01</text>
+      <text class="day-hours" x="85" y="315" id="hours0">0.0h</text>
+      <g id="entries0" transform="translate(25, 325)">
+        <!-- Wpisy dnia -->
+      </g>
+    </g>
+
+    <!-- Wtorek -->
+    <g id="day1">
+      <rect class="day-card" x="160" y="250" width="130" height="500"/>
+      <text class="day-header" x="225" y="275">Wtorek</text>
+      <text class="day-date" x="225" y="295" id="date1">07.01</text>
+      <text class="day-hours" x="225" y="315" id="hours1">0.0h</text>
+      <g id="entries1" transform="translate(165, 325)">
+        <!-- Wpisy dnia -->
+      </g>
+    </g>
+
+    <!-- Środa -->
+    <g id="day2">
+      <rect class="day-card" x="300" y="250" width="130" height="500"/>
+      <text class="day-header" x="365" y="275">Środa</text>
+      <text class="day-date" x="365" y="295" id="date2">08.01</text>
+      <text class="day-hours" x="365" y="315" id="hours2">0.0h</text>
+      <g id="entries2" transform="translate(305, 325)">
+        <!-- Wpisy dnia -->
+      </g>
+    </g>
+
+    <!-- Czwartek -->
+    <g id="day3">
+      <rect class="day-card" x="440" y="250" width="130" height="500"/>
+      <text class="day-header" x="505" y="275">Czwartek</text>
+      <text class="day-date" x="505" y="295" id="date3">09.01</text>
+      <text class="day-hours" x="505" y="315" id="hours3">0.0h</text>
+      <g id="entries3" transform="translate(445, 325)">
+        <!-- Wpisy dnia -->
+      </g>
+    </g>
+
+    <!-- Piątek -->
+    <g id="day4">
+      <rect class="day-card" x="580" y="250" width="130" height="500"/>
+      <text class="day-header" x="645" y="275">Piątek</text>
+      <text class="day-date" x="645" y="295" id="date4">10.01</text>
+      <text class="day-hours" x="645" y="315" id="hours4">0.0h</text>
+      <g id="entries4" transform="translate(585, 325)">
+        <!-- Wpisy dnia -->
+      </g>
+    </g>
+
+    <!-- Sobota -->
+    <g id="day5">
+      <rect class="day-card" x="720" y="250" width="130" height="500"/>
+      <text class="day-header" x="785" y="275">Sobota</text>
+      <text class="day-date" x="785" y="295" id="date5">11.01</text>
+      <text class="day-hours" x="785" y="315" id="hours5">0.0h</text>
+      <g id="entries5" transform="translate(725, 325)">
+        <!-- Wpisy dnia -->
+      </g>
+    </g>
+
+    <!-- Niedziela -->
+    <g id="day6">
+      <rect class="day-card" x="860" y="250" width="130" height="500"/>
+      <text class="day-header" x="925" y="275">Niedziela</text>
+      <text class="day-date" x="925" y="295" id="date6">12.01</text>
+      <text class="day-hours" x="925" y="315" id="hours6">0.0h</text>
+      <g id="entries6" transform="translate(865, 325)">
+        <!-- Wpisy dnia -->
+      </g>
+    </g>
+  </g>
+
+  <!-- Ukryty input do importu plików -->
+  <foreignObject x="0" y="0" width="1" height="1">
+    <input type="file" id="fileInput" accept=".csv" style="display: none;" />
+  </foreignObject>
+
+  <!-- JavaScript -->
+  <script><![CDATA[
+    let currentWeekStart = new Date('2025-01-06'); // Poniedziałek
+    let allEntries = [];
+    
+    const dayNames = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
+    
+    // Inicjalizacja
+    document.addEventListener('DOMContentLoaded', function() {
+      loadAllData();
+      setupEventListeners();
+      updateWeekView();
+    });
+    
+    function loadAllData() {
+      // Ładowanie z localStorage głównej aplikacji
+      const stored = localStorage.getItem('timeEntriesSVG');
+      if (stored) {
+        allEntries = JSON.parse(stored);
+      }
+      
+      // Ładowanie z localStorage przeglądarki
+      const weeklyStored = localStorage.getItem('weeklyTimeEntries');
+      if (weeklyStored) {
+        const weeklyEntries = JSON.parse(weeklyStored);
+        // Połączenie danych bez duplikatów
+        weeklyEntries.forEach(entry => {
+          if (!allEntries.find(e => e.id === entry.id)) {
+            allEntries.push(entry);
+          }
+        });
+      }
+    }
+    
+    function saveWeeklyData() {
+      localStorage.setItem('weeklyTimeEntries', JSON.stringify(allEntries));
+    }
+    
+    function setupEventListeners() {
+      document.getElementById('prevWeekBtn').addEventListener('click', () => {
+        currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+        updateWeekView();
+      });
+      
+      document.getElementById('nextWeekBtn').addEventListener('click', () => {
+        currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+        updateWeekView();
+      });
+      
+      document.getElementById('exportWeekBtn').addEventListener('click', exportWeek);
+      document.getElementById('importBtn').addEventListener('click', () => {
+        document.getElementById('fileInput').click();
+      });
+      document.getElementById('clearWeekBtn').addEventListener('click', clearWeek);
+      
+      document.getElementById('fileInput').addEventListener('change', importCSV);
+    }
+    
+    function updateWeekView() {
+      updateWeekTitle();
+      updateDates();
+      renderWeekEntries();
+      updateWeekStats();
+    }
+    
+    function updateWeekTitle() {
+      const weekEnd = new Date(currentWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      
+      const startStr = formatDateShort(currentWeekStart);
+      const endStr = formatDateShort(weekEnd);
+      
+      document.getElementById('weekTitle').textContent = 
+        `Tydzień: ${startStr} - ${endStr}`;
+    }
+    
+    function updateDates() {
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(currentWeekStart);
+        date.setDate(date.getDate() + i);
+        
+        const dateElement = document.getElementById(`date${i}`);
+        dateElement.textContent = formatDateShort(date);
+      }
+    }
+    
+    function renderWeekEntries() {
+      for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+        const date = new Date(currentWeekStart);
+        date.setDate(date.getDate() + dayIndex);
+        const dateStr = formatDateISO(date);
+        
+        const dayEntries = allEntries.filter(entry => entry.date === dateStr);
+        const entriesContainer = document.getElementById(`entries${dayIndex}`);
+        entriesContainer.innerHTML = '';
+        
+        // Aktualizacja godzin dnia
+        const totalHours = dayEntries.reduce((sum, entry) => sum + parseFloat(entry.duration), 0);
+        document.getElementById(`hours${dayIndex}`).textContent = `${totalHours.toFixed(1)}h`;
+        
+        if (dayEntries.length === 0) {
+          // Puste dni
+          const emptyRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          emptyRect.setAttribute('class', 'empty-day');
+          emptyRect.setAttribute('x', '5');
+          emptyRect.setAttribute('y', '20');
+          emptyRect.setAttribute('width', '120');
+          emptyRect.setAttribute('height', '40');
+          
+          const emptyText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          emptyText.setAttribute('class', 'empty-text');
+          emptyText.setAttribute('x', '65');
+          emptyText.setAttribute('y', '45');
+          emptyText.textContent = 'Brak wpisów';
+          
+          entriesContainer.appendChild(emptyRect);
+          entriesContainer.appendChild(emptyText);
+        } else {
+          // Renderowanie wpisów
+          dayEntries.forEach((entry, index) => {
+            const y = index * 80 + 10;
+            
+            // Tło wpisu
+            const entryBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            entryBg.setAttribute('class', 'entry-item');
+            entryBg.setAttribute('x', '5');
+            entryBg.setAttribute('y', y);
+            entryBg.setAttribute('width', '120');
+            entryBg.setAttribute('height', '75');
+            
+            // Godziny
+            const timeText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            timeText.setAttribute('class', 'entry-time');
+            timeText.setAttribute('x', '10');
+            timeText.setAttribute('y', y + 15);
+            timeText.textContent = `${entry.startTime}-${entry.endTime}`;
+            
+            // Czas trwania
+            const durationText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            durationText.setAttribute('class', 'entry-time');
+            durationText.setAttribute('x', '85');
+            durationText.setAttribute('y', y + 15);
+            durationText.setAttribute('text-anchor', 'end');
+            durationText.textContent = `${entry.duration}h`;
+            
+            // Kategoria
+            const categoryText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            categoryText.setAttribute('class', 'entry-category');
+            categoryText.setAttribute('x', '10');
+            categoryText.setAttribute('y', y + 30);
+            categoryText.textContent = entry.category.substring(0, 15);
+            
+            // Opis (skrócony)
+            const descText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            descText.setAttribute('class', 'entry-text');
+            descText.setAttribute('x', '10');
+            descText.setAttribute('y', y + 45);
+            const shortDesc = entry.description.length > 20 ? 
+              entry.description.substring(0, 20) + '...' : entry.description;
+            descText.textContent = shortDesc;
+            
+            // Projekt
+            if (entry.project) {
+              const projectText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+              projectText.setAttribute('class', 'entry-time');
+              projectText.setAttribute('x', '10');
+              projectText.setAttribute('y', y + 60);
+              projectText.textContent = `📁 ${entry.project.substring(0, 12)}`;
+              entriesContainer.appendChild(projectText);
+            }
+            
+            entriesContainer.appendChild(entryBg);
+            entriesContainer.appendChild(timeText);
+            entriesContainer.appendChild(durationText);
+            entriesContainer.appendChild(categoryText);
+            entriesContainer.appendChild(descText);
+          });
+        }
+      }
+    }
+    
+    function updateWeekStats() {
+      const weekEnd = new Date(currentWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      
+      const weekEntries = allEntries.filter(entry => {
+        const entryDate = new Date(entry.date);
+        return entryDate >= currentWeekStart && entryDate <= weekEnd;
+      });
+      
+      const totalHours = weekEntries.reduce((sum, entry) => sum + parseFloat(entry.duration), 0);
+      document.getElementById('weekTotalHours').textContent = totalHours.toFixed(1);
+    }
+    
+    function exportWeek() {
+      const weekEnd = new Date(currentWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      
+      const weekEntries = allEntries.filter(entry => {
+        const entryDate = new Date(entry.date);
+        return entryDate >= currentWeekStart && entryDate <= weekEnd;
+      });
+      
+      if (weekEntries.length === 0) {
+        alert('Brak wpisów w tym tygodniu!');
+        return;
+      }
+      
+      const headers = ['Data', 'Dzień tygodnia', 'Godzina rozpoczęcia', 'Godzina zakończenia', 'Czas trwania (h)', 'Kategoria', 'Opis czynności', 'Projekt', 'Data utworzenia'];
+      
+      const csvData = weekEntries.map(entry => {
+        const entryDate = new Date(entry.date);
+        const dayName = dayNames[entryDate.getDay() === 0 ? 6 : entryDate.getDay() - 1];
+        
+        return [
+          entry.date,
+          dayName,
+          entry.startTime,
+          entry.endTime,
+          entry.duration,
+          entry.category,
+          `"${entry.description.replace(/"/g, '""')}"`,
+          entry.project || '',
+          entry.created
+        ];
+      });
+      
+      const csvContent = [headers, ...csvData]
+        .map(row => row.join(','))
+        .join('\n');
+      
+      const startStr = formatDateFile(currentWeekStart);
+      const endStr = formatDateFile(weekEnd);
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ewidencja-tydzien-${startStr}-${endStr}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    
+    function importCSV(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const csvData = e.target.result;
+          const lines = csvData.split('\n');
+          const headers = lines[0].split(',');
+          
+          // Sprawdzenie czy to właściwy format
+          if (!headers.includes('Data') || !headers.includes('Kategoria')) {
+            alert('Nieprawidłowy format pliku CSV!');
+            return;
+          }
+          
+          let importedCount = 0;
+          for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            const values = parseCSVLine(line);
+            if (values.length < headers.length) continue;
+            
+            const entry = {
+              id: Date.now() + i,
+              date: values[0],
+              startTime: values[2] || values[1], // Obsługa różnych formatów
+              endTime: values[3] || values[2],
+              duration: values[4] || calculateDuration(values[1], values[2]),
+              category: values[5] || values[4],
+              description: values[6] || values[5] || '',
+              project: values[7] || values[6] || '',
+              created: values[8] || new Date().toISOString()
+            };
+            
+            // Sprawdzenie czy wpis już istnieje
+            if (!allEntries.find(e => 
+              e.date === entry.date && 
+              e.startTime === entry.startTime && 
+              e.description === entry.description
+            )) {
+              allEntries.push(entry);
+              importedCount++;
+            }
+          }
+          
+          saveWeeklyData();
+          updateWeekView();
+          alert(`Zaimportowano ${importedCount} nowych wpisów!`);
+          
+        } catch (error) {
+          alert('Błąd podczas importu pliku!');
+          console.error(error);
+        }
+      };
+      
+      reader.readAsText(file, 'UTF-8');
+      event.target.value = ''; // Reset input
+    }
+    
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      
+      result.push(current.trim());
+      return result;
+    }
+    
+    function calculateDuration(start, end) {
+      if (!start || !end) return '0.00';
+      
+      const startTime = new Date(`2025-01-01T${start}`);
+      const endTime = new Date(`2025-01-01T${end}`);
+      const duration = (endTime - startTime) / (1000 * 60 * 60);
+      
+      return duration > 0 ? duration.toFixed(2) : '0.00';
+    }
+    
+    function clearWeek() {
+      if (!confirm('Usunąć wszystkie wpisy z tego tygodnia?')) return;
+      
+      const weekEnd = new Date(currentWeekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      
+      allEntries = allEntries.filter(entry => {
+        const entryDate = new Date(entry.date);
+        return !(entryDate >= currentWeekStart && entryDate <= weekEnd);
+      });
+      
+      saveWeeklyData();
+      updateWeekView();
+    }
+    
+    function formatDateShort(date) {
+      return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+    }
+    
+    function formatDateISO(date) {
+      return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    }
+    
+    function formatDateFile(date) {
+      return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    }
+    
+    // Automatyczne odświeżanie danych co 30 sekund
+    setInterval(() => {
+      loadAllData();
+      updateWeekView();
+    }, 30000);
+  ]]></script>
+</svg>

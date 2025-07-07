@@ -1,0 +1,554 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <!-- Definicje stylów -->
+  <defs>
+    <style>
+      .container { font-family: 'Arial', sans-serif; }
+      .header { fill: white; font-size: 24px; font-weight: bold; text-anchor: middle; }
+      .subtitle { fill: white; font-size: 14px; text-anchor: middle; opacity: 0.9; }
+      .card { fill: white; stroke: none; rx: 15; }
+      .card-shadow { fill: rgba(0,0,0,0.1); rx: 15; }
+      .form-label { fill: #374151; font-size: 12px; font-weight: bold; }
+      .btn { fill: #2563eb; stroke: none; rx: 8; cursor: pointer; }
+      .btn:hover { fill: #1d4ed8; }
+      .btn-text { fill: white; font-size: 12px; font-weight: bold; text-anchor: middle; }
+      .input-bg { fill: #f8fafc; stroke: #d1d5db; stroke-width: 2; rx: 6; }
+      .select-bg { fill: #f8fafc; stroke: #d1d5db; stroke-width: 2; rx: 6; cursor: pointer; }
+      .select-bg:hover { fill: #e2e8f0; }
+      .select-text { fill: #374151; font-size: 12px; cursor: pointer; }
+      .entry-row { fill: #f8fafc; stroke: #e2e8f0; stroke-width: 1; rx: 5; }
+      .entry-row:hover { fill: #e2e8f0; }
+      .entry-text { fill: #374151; font-size: 10px; }
+      .stat-card { fill: #f0f9ff; stroke: #bae6fd; stroke-width: 2; rx: 10; }
+      .stat-value { fill: #0369a1; font-size: 18px; font-weight: bold; text-anchor: middle; }
+      .stat-label { fill: #0369a1; font-size: 10px; text-anchor: middle; }
+      .delete-btn { fill: #ef4444; stroke: none; rx: 4; cursor: pointer; }
+      .delete-btn:hover { fill: #dc2626; }
+      .edit-btn { fill: #10b981; stroke: none; rx: 4; cursor: pointer; }
+      .edit-btn:hover { fill: #059669; }
+      .dropdown { fill: white; stroke: #d1d5db; stroke-width: 1; rx: 4; }
+      .dropdown-item { fill: white; stroke: none; cursor: pointer; }
+      .dropdown-item:hover { fill: #f3f4f6; }
+      .dropdown-text { fill: #374151; font-size: 11px; cursor: pointer; }
+      .hidden { display: none; }
+    </style>
+  </defs>
+
+  <!-- Nagłówek -->
+  <rect class="card-shadow" x="22" y="22" width="756" height="98"/>
+  <rect class="card" x="20" y="20" width="760" height="100" fill="url(#headerGradient)"/>
+  <defs>
+    <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <text class="header" x="400" y="50">📊 Ewidencja Czasu Pracy</text>
+  <text class="subtitle" x="400" y="75">Dokumentacja B+R zgodna z IP BOX</text>
+
+  <!-- Statystyki -->
+  <g id="statsSection">
+    <rect class="stat-card" x="20" y="140" width="240" height="60"/>
+    <text class="stat-value" x="140" y="165" id="totalHours">0.0</text>
+    <text class="stat-label" x="140" y="185">Łączne godziny</text>
+    
+    <rect class="stat-card" x="280" y="140" width="240" height="60"/>
+    <text class="stat-value" x="400" y="165" id="totalEntries">0</text>
+    <text class="stat-label" x="400" y="185">Liczba wpisów</text>
+    
+    <rect class="stat-card" x="540" y="140" width="240" height="60"/>
+    <text class="stat-value" x="660" y="165" id="avgHours">0.0</text>
+    <text class="stat-label" x="660" y="185">Średnio godz/dzień</text>
+  </g>
+
+  <!-- Formularz -->
+  <g id="formSection">
+    <rect class="card-shadow" x="22" y="222" width="756" height="280"/>
+    <rect class="card" x="20" y="220" width="760" height="280"/>
+    
+    <text class="form-label" x="40" y="245">Data:</text>
+    <rect class="input-bg" x="40" y="250" width="140" height="30"/>
+    <text id="dateDisplay" x="50" y="270" class="select-text">2025-01-07</text>
+    
+    <!-- Selectboxy dla godzin -->
+    <text class="form-label" x="200" y="245">Godzina rozpoczęcia:</text>
+    <rect class="select-bg" x="200" y="250" width="80" height="30" id="startHourSelect"/>
+    <text id="startHourText" x="240" y="270" class="select-text">08:00</text>
+    <polygon fill="#666" points="270,260 275,270 265,270" id="startHourArrow"/>
+    
+    <text class="form-label" x="300" y="245">Godzina zakończenia:</text>
+    <rect class="select-bg" x="300" y="250" width="80" height="30" id="endHourSelect"/>
+    <text id="endHourText" x="340" y="270" class="select-text">17:00</text>
+    <polygon fill="#666" points="370,260 375,270 365,270" id="endHourArrow"/>
+    
+    <!-- Selectbox kategorii -->
+    <text class="form-label" x="400" y="245">Kategoria:</text>
+    <rect class="select-bg" x="400" y="250" width="180" height="30" id="categorySelect"/>
+    <text id="categoryText" x="410" y="270" class="select-text">Wybierz kategorię</text>
+    <polygon fill="#666" points="570,260 575,270 565,270" id="categoryArrow"/>
+    
+    <!-- Opis -->
+    <text class="form-label" x="40" y="305">Opis czynności:</text>
+    <rect class="input-bg" x="40" y="310" width="540" height="60"/>
+    <foreignObject x="45" y="315" width="530" height="50">
+      <textarea id="descriptionInput" style="width:100%; height:100%; border:none; background:transparent; resize:none; font-size:12px; padding:5px;" placeholder="Szczegółowy opis wykonywanej pracy..."></textarea>
+    </foreignObject>
+    
+    <!-- Projekt -->
+    <text class="form-label" x="40" y="390">Projekt:</text>
+    <rect class="input-bg" x="40" y="395" width="200" height="30"/>
+    <foreignObject x="45" y="400" width="190" height="20">
+      <input id="projectInput" type="text" style="width:100%; height:100%; border:none; background:transparent; font-size:12px;" placeholder="Nazwa projektu"/>
+    </foreignObject>
+    
+    <!-- Przyciski -->
+    <rect class="btn" x="40" y="440" width="120" height="35" id="addBtn"/>
+    <text class="btn-text" x="100" y="462">Dodaj wpis</text>
+    
+    <rect class="btn" x="180" y="440" width="120" height="35" id="exportDayBtn" fill="#10b981"/>
+    <text class="btn-text" x="240" y="462">Eksport dnia</text>
+    
+    <rect class="btn" x="320" y="440" width="120" height="35" id="clearBtn" fill="#ef4444"/>
+    <text class="btn-text" x="380" y="462">Wyczyść</text>
+  </g>
+
+  <!-- Lista wpisów -->
+  <g id="entriesSection">
+    <rect class="card-shadow" x="22" y="522" width="756" height="650"/>
+    <rect class="card" x="20" y="520" width="760" height="650"/>
+    
+    <text class="form-label" x="40" y="545">📋 Wpisy z dnia:</text>
+    <text id="currentDateLabel" x="200" y="545" class="form-label">2025-01-07</text>
+    
+    <g id="entriesList">
+      <!-- Wpisy będą generowane dynamicznie -->
+    </g>
+  </g>
+
+  <!-- Dropdowny (ukryte domyślnie) -->
+  <g id="startHourDropdown" class="hidden">
+    <rect class="dropdown" x="200" y="280" width="80" height="200"/>
+    <!-- Opcje godzin będą generowane -->
+  </g>
+  
+  <g id="endHourDropdown" class="hidden">
+    <rect class="dropdown" x="300" y="280" width="80" height="200"/>
+    <!-- Opcje godzin będą generowane -->
+  </g>
+  
+  <g id="categoryDropdown" class="hidden">
+    <rect class="dropdown" x="400" y="280" width="180" height="240"/>
+    <!-- Opcje kategorii -->
+  </g>
+
+  <!-- JavaScript -->
+  <script><![CDATA[
+    let entries = [];
+    let editingId = null;
+    let currentDate = '2025-01-07';
+    let selectedStartHour = '08:00';
+    let selectedEndHour = '17:00';
+    let selectedCategory = '';
+    
+    const categories = [
+      'Badania i rozwój',
+      'Projektowanie',
+      'Programowanie',
+      'Testowanie',
+      'Dokumentacja',
+      'Spotkania B+R',
+      'Analiza',
+      'Prototypowanie',
+      'Optymalizacja',
+      'Inne B+R'
+    ];
+    
+    const hours = [];
+    for (let h = 6; h <= 23; h++) {
+      for (let m = 0; m < 60; m += 15) {
+        const time = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        hours.push(time);
+      }
+    }
+    
+    // Inicjalizacja
+    document.addEventListener('DOMContentLoaded', function() {
+      loadData();
+      setupEventListeners();
+      generateDropdowns();
+      renderEntries();
+      updateStats();
+    });
+    
+    function loadData() {
+      const stored = localStorage.getItem('timeEntriesSVG');
+      if (stored) {
+        entries = JSON.parse(stored);
+      }
+    }
+    
+    function saveData() {
+      localStorage.setItem('timeEntriesSVG', JSON.stringify(entries));
+    }
+    
+    function setupEventListeners() {
+      // Selectboxy
+      document.getElementById('startHourSelect').addEventListener('click', () => toggleDropdown('startHour'));
+      document.getElementById('endHourSelect').addEventListener('click', () => toggleDropdown('endHour'));
+      document.getElementById('categorySelect').addEventListener('click', () => toggleDropdown('category'));
+      
+      // Przyciski
+      document.getElementById('addBtn').addEventListener('click', addEntry);
+      document.getElementById('exportDayBtn').addEventListener('click', exportDay);
+      document.getElementById('clearBtn').addEventListener('click', clearEntries);
+      
+      // Zamknięcie dropdownów przy kliknięciu poza nimi
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#startHourSelect') && !e.target.closest('#startHourDropdown')) {
+          hideDropdown('startHour');
+        }
+        if (!e.target.closest('#endHourSelect') && !e.target.closest('#endHourDropdown')) {
+          hideDropdown('endHour');
+        }
+        if (!e.target.closest('#categorySelect') && !e.target.closest('#categoryDropdown')) {
+          hideDropdown('category');
+        }
+      });
+    }
+    
+    function generateDropdowns() {
+      // Dropdown godzin rozpoczęcia
+      const startDropdown = document.getElementById('startHourDropdown');
+      hours.forEach((hour, index) => {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('class', 'dropdown-item');
+        rect.setAttribute('x', '200');
+        rect.setAttribute('y', 280 + index * 20);
+        rect.setAttribute('width', '80');
+        rect.setAttribute('height', '20');
+        rect.addEventListener('click', () => selectHour('start', hour));
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('class', 'dropdown-text');
+        text.setAttribute('x', '210');
+        text.setAttribute('y', 295 + index * 20);
+        text.textContent = hour;
+        text.addEventListener('click', () => selectHour('start', hour));
+        
+        startDropdown.appendChild(rect);
+        startDropdown.appendChild(text);
+      });
+      
+      // Dropdown godzin zakończenia
+      const endDropdown = document.getElementById('endHourDropdown');
+      hours.forEach((hour, index) => {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('class', 'dropdown-item');
+        rect.setAttribute('x', '300');
+        rect.setAttribute('y', 280 + index * 20);
+        rect.setAttribute('width', '80');
+        rect.setAttribute('height', '20');
+        rect.addEventListener('click', () => selectHour('end', hour));
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('class', 'dropdown-text');
+        text.setAttribute('x', '310');
+        text.setAttribute('y', 295 + index * 20);
+        text.textContent = hour;
+        text.addEventListener('click', () => selectHour('end', hour));
+        
+        endDropdown.appendChild(rect);
+        endDropdown.appendChild(text);
+      });
+      
+      // Dropdown kategorii
+      const categoryDropdown = document.getElementById('categoryDropdown');
+      categories.forEach((category, index) => {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('class', 'dropdown-item');
+        rect.setAttribute('x', '400');
+        rect.setAttribute('y', 280 + index * 24);
+        rect.setAttribute('width', '180');
+        rect.setAttribute('height', '24');
+        rect.addEventListener('click', () => selectCategory(category));
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('class', 'dropdown-text');
+        text.setAttribute('x', '410');
+        text.setAttribute('y', 297 + index * 24);
+        text.textContent = category;
+        text.addEventListener('click', () => selectCategory(category));
+        
+        categoryDropdown.appendChild(rect);
+        categoryDropdown.appendChild(text);
+      });
+    }
+    
+    function toggleDropdown(type) {
+      const dropdown = document.getElementById(type + 'Dropdown');
+      const isHidden = dropdown.classList.contains('hidden');
+      
+      // Ukryj wszystkie dropdowny
+      document.getElementById('startHourDropdown').classList.add('hidden');
+      document.getElementById('endHourDropdown').classList.add('hidden');
+      document.getElementById('categoryDropdown').classList.add('hidden');
+      
+      // Pokaż wybrany jeśli był ukryty
+      if (isHidden) {
+        dropdown.classList.remove('hidden');
+      }
+    }
+    
+    function hideDropdown(type) {
+      document.getElementById(type + 'Dropdown').classList.add('hidden');
+    }
+    
+    function selectHour(type, hour) {
+      if (type === 'start') {
+        selectedStartHour = hour;
+        document.getElementById('startHourText').textContent = hour;
+      } else {
+        selectedEndHour = hour;
+        document.getElementById('endHourText').textContent = hour;
+      }
+      hideDropdown(type + 'Hour');
+    }
+    
+    function selectCategory(category) {
+      selectedCategory = category;
+      document.getElementById('categoryText').textContent = category;
+      hideDropdown('category');
+    }
+    
+    function addEntry() {
+      const description = document.getElementById('descriptionInput').value;
+      const project = document.getElementById('projectInput').value;
+      
+      if (!selectedCategory || !description.trim()) {
+        alert('Proszę wybrać kategorię i wprowadzić opis!');
+        return;
+      }
+      
+      const start = new Date(`${currentDate}T${selectedStartHour}`);
+      const end = new Date(`${currentDate}T${selectedEndHour}`);
+      const duration = (end - start) / (1000 * 60 * 60);
+      
+      if (duration <= 0) {
+        alert('Godzina zakończenia musi być późniejsza niż rozpoczęcia!');
+        return;
+      }
+      
+      const entry = {
+        id: editingId || Date.now(),
+        date: currentDate,
+        startTime: selectedStartHour,
+        endTime: selectedEndHour,
+        duration: duration.toFixed(2),
+        category: selectedCategory,
+        description: description.trim(),
+        project: project.trim(),
+        created: new Date().toISOString()
+      };
+      
+      if (editingId) {
+        const index = entries.findIndex(e => e.id === editingId);
+        entries[index] = entry;
+        editingId = null;
+      } else {
+        entries.push(entry);
+      }
+      
+      saveData();
+      renderEntries();
+      updateStats();
+      clearForm();
+    }
+    
+    function clearForm() {
+      document.getElementById('descriptionInput').value = '';
+      document.getElementById('projectInput').value = '';
+      document.getElementById('categoryText').textContent = 'Wybierz kategorię';
+      selectedCategory = '';
+      editingId = null;
+    }
+    
+    function renderEntries() {
+      const entriesList = document.getElementById('entriesList');
+      entriesList.innerHTML = '';
+      
+      const todayEntries = entries.filter(e => e.date === currentDate);
+      
+      if (todayEntries.length === 0) {
+        const emptyText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        emptyText.setAttribute('x', '400');
+        emptyText.setAttribute('y', '600');
+        emptyText.setAttribute('text-anchor', 'middle');
+        emptyText.setAttribute('fill', '#9ca3af');
+        emptyText.textContent = 'Brak wpisów na dzisiaj';
+        entriesList.appendChild(emptyText);
+        return;
+      }
+      
+      todayEntries.forEach((entry, index) => {
+        const y = 570 + index * 35;
+        
+        // Tło wiersza
+        const rowBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rowBg.setAttribute('class', 'entry-row');
+        rowBg.setAttribute('x', '30');
+        rowBg.setAttribute('y', y);
+        rowBg.setAttribute('width', '740');
+        rowBg.setAttribute('height', '30');
+        
+        // Godziny
+        const timeText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        timeText.setAttribute('class', 'entry-text');
+        timeText.setAttribute('x', '40');
+        timeText.setAttribute('y', y + 18);
+        timeText.textContent = `${entry.startTime}-${entry.endTime} (${entry.duration}h)`;
+        
+        // Kategoria
+        const categoryText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        categoryText.setAttribute('class', 'entry-text');
+        categoryText.setAttribute('x', '150');
+        categoryText.setAttribute('y', y + 18);
+        categoryText.textContent = entry.category;
+        
+        // Opis
+        const descText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        descText.setAttribute('class', 'entry-text');
+        descText.setAttribute('x', '300');
+        descText.setAttribute('y', y + 18);
+        descText.textContent = entry.description.substring(0, 40) + (entry.description.length > 40 ? '...' : '');
+        
+        // Projekt
+        const projectText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        projectText.setAttribute('class', 'entry-text');
+        projectText.setAttribute('x', '550');
+        projectText.setAttribute('y', y + 18);
+        projectText.textContent = entry.project || '-';
+        
+        // Przycisk edycji
+        const editBtn = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        editBtn.setAttribute('class', 'edit-btn');
+        editBtn.setAttribute('x', '650');
+        editBtn.setAttribute('y', y + 5);
+        editBtn.setAttribute('width', '40');
+        editBtn.setAttribute('height', '20');
+        editBtn.addEventListener('click', () => editEntry(entry.id));
+        
+        const editText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        editText.setAttribute('x', '670');
+        editText.setAttribute('y', y + 18);
+        editText.setAttribute('text-anchor', 'middle');
+        editText.setAttribute('fill', 'white');
+        editText.setAttribute('font-size', '10');
+        editText.textContent = 'Edit';
+        editText.addEventListener('click', () => editEntry(entry.id));
+        
+        // Przycisk usuwania
+        const deleteBtn = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        deleteBtn.setAttribute('class', 'delete-btn');
+        deleteBtn.setAttribute('x', '700');
+        deleteBtn.setAttribute('y', y + 5);
+        deleteBtn.setAttribute('width', '40');
+        deleteBtn.setAttribute('height', '20');
+        deleteBtn.addEventListener('click', () => deleteEntry(entry.id));
+        
+        const deleteText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        deleteText.setAttribute('x', '720');
+        deleteText.setAttribute('y', y + 18);
+        deleteText.setAttribute('text-anchor', 'middle');
+        deleteText.setAttribute('fill', 'white');
+        deleteText.setAttribute('font-size', '10');
+        deleteText.textContent = 'Del';
+        deleteText.addEventListener('click', () => deleteEntry(entry.id));
+        
+        entriesList.appendChild(rowBg);
+        entriesList.appendChild(timeText);
+        entriesList.appendChild(categoryText);
+        entriesList.appendChild(descText);
+        entriesList.appendChild(projectText);
+        entriesList.appendChild(editBtn);
+        entriesList.appendChild(editText);
+        entriesList.appendChild(deleteBtn);
+        entriesList.appendChild(deleteText);
+      });
+    }
+    
+    function editEntry(id) {
+      const entry = entries.find(e => e.id === id);
+      if (!entry) return;
+      
+      editingId = id;
+      selectedStartHour = entry.startTime;
+      selectedEndHour = entry.endTime;
+      selectedCategory = entry.category;
+      
+      document.getElementById('startHourText').textContent = entry.startTime;
+      document.getElementById('endHourText').textContent = entry.endTime;
+      document.getElementById('categoryText').textContent = entry.category;
+      document.getElementById('descriptionInput').value = entry.description;
+      document.getElementById('projectInput').value = entry.project;
+    }
+    
+    function deleteEntry(id) {
+      if (confirm('Usunąć wpis?')) {
+        entries = entries.filter(e => e.id !== id);
+        saveData();
+        renderEntries();
+        updateStats();
+      }
+    }
+    
+    function updateStats() {
+      const totalHours = entries.reduce((sum, entry) => sum + parseFloat(entry.duration), 0);
+      const totalEntries = entries.length;
+      const uniqueDays = [...new Set(entries.map(entry => entry.date))].length;
+      const avgHours = uniqueDays > 0 ? (totalHours / uniqueDays) : 0;
+      
+      document.getElementById('totalHours').textContent = totalHours.toFixed(1);
+      document.getElementById('totalEntries').textContent = totalEntries;
+      document.getElementById('avgHours').textContent = avgHours.toFixed(1);
+    }
+    
+    function exportDay() {
+      const todayEntries = entries.filter(e => e.date === currentDate);
+      if (todayEntries.length === 0) {
+        alert('Brak wpisów do eksportu!');
+        return;
+      }
+      
+      const headers = ['Data', 'Godzina rozpoczęcia', 'Godzina zakończenia', 'Czas trwania (h)', 'Kategoria', 'Opis', 'Projekt'];
+      const csvData = todayEntries.map(entry => [
+        entry.date,
+        entry.startTime,
+        entry.endTime,
+        entry.duration,
+        entry.category,
+        `"${entry.description.replace(/"/g, '""')}"`,
+        entry.project || ''
+      ]);
+      
+      const csvContent = [headers, ...csvData]
+        .map(row => row.join(','))
+        .join('\n');
+      
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ewidencja-${currentDate}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    
+    function clearEntries() {
+      if (confirm('Wyczyścić wszystkie wpisy?')) {
+        entries = [];
+        saveData();
+        renderEntries();
+        updateStats();
+      }
+    }
+  ]]></script>
+</svg>

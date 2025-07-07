@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:pwa="http://svg-pwa.org/ns/manifest" xmlns:data="http://svg-pwa.org/ns/data" xmlns:sw="http://svg-pwa.org/ns/serviceworker" width="400" height="600" viewBox="0 0 400 600" data-pwa-version="1.0" data-app-id="svg-pwa-stopwatch-demo-2025" class="">
+
+    <!-- 1. METADATA SECTION -->
+    <metadata>
+        <pwa:manifest xmlns:pwa="http://svg-pwa.org/ns/manifest">
+            <pwa:name>SVG-PWA Stoper</pwa:name>
+            <pwa:short_name>Stoper</pwa:short_name>
+            <pwa:description>Demonstracja formatu SVG-PWA - pierwszy standalone stoper</pwa:description>
+            <pwa:start_url>.</pwa:start_url>
+            <pwa:display>standalone</pwa:display>
+            <pwa:orientation>portrait</pwa:orientation>
+            <pwa:theme_color>#667eea</pwa:theme_color>
+            <pwa:background_color>#764ba2</pwa:background_color>
+            <pwa:scope>.</pwa:scope>
+            <pwa:lang>pl</pwa:lang>
+        </pwa:manifest>
+
+        <sw:worker xmlns:sw="http://svg-pwa.org/ns/serviceworker">
+            <sw:cache-strategy>cache-first</sw:cache-strategy>
+            <sw:offline-fallback>true</sw:offline-fallback>
+        </sw:worker>
+
+        <data:sources xmlns:data="http://svg-pwa.org/ns/data">
+            <data:local storage="localStorage"/>
+            <data:indexed storage="indexedDB"/>
+        </data:sources>
+
+        <!-- Schema.org metadata -->
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:schema="http://schema.org/">
+            <schema:SoftwareApplication rdf:about="">
+                <schema:name>SVG-PWA Stoper</schema:name>
+                <schema:applicationCategory>Productivity</schema:applicationCategory>
+                <schema:operatingSystem>Web Browser</schema:operatingSystem>
+                <schema:dateCreated>2025-06-24</schema:dateCreated>
+            </schema:SoftwareApplication>
+        </rdf:RDF>
+    </metadata>
+
+    <!-- 2. VISUAL DEFINITION SECTION -->
+    <defs>
+        <!-- Gradients -->
+        <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1"/>
+        </linearGradient>
+
+        <radialGradient id="buttonGradient" cx="50%" cy="30%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3"/>
+            <stop offset="100%" style="stop-color:#000000;stop-opacity:0.1"/>
+        </radialGradient>
+
+        <!-- Filters -->
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
+        </filter>
+
+        <!-- Icons as reusable elements -->
+        <g id="play-icon">
+            <polygon points="0,-8 12,0 0,8" fill="currentColor"/>
+        </g>
+
+        <g id="pause-icon">
+            <rect x="-6" y="-8" width="4" height="16" fill="currentColor"/>
+            <rect x="2" y="-8" width="4" height="16" fill="currentColor"/>
+        </g>
+
+        <g id="reset-icon">
+            <path d="M-8,-4 A8,8 0 1,1 -8,4 L-4,0 Z" fill="currentColor"/>
+            <polygon points="-8,-2 -12,0 -8,2" fill="currentColor"/>
+        </g>
+
+        <g id="lap-icon">
+            <circle r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle r="2" fill="currentColor"/>
+        </g>
+    </defs>
+
+    <!-- 3. BACKGROUND -->
+    <rect width="400" height="600" fill="url(#primaryGradient)"/>
+
+    <!-- Decorative background pattern -->
+    <g opacity="0.1">
+        <circle cx="100" cy="100" r="60" fill="none" stroke="white" stroke-width="2"/>
+        <circle cx="300" cy="150" r="40" fill="none" stroke="white" stroke-width="1"/>
+        <circle cx="80" cy="500" r="50" fill="none" stroke="white" stroke-width="2"/>
+        <circle cx="320" cy="480" r="35" fill="none" stroke="white" stroke-width="1"/>
+    </g>
+
+    <!-- 4. UI COMPONENTS SECTION (SVG-based interface) -->
+    <g id="app-shell">
+        <!-- Header -->
+        <rect x="0" y="0" width="400" height="80" fill="rgba(0,0,0,0.2)"/>
+        <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="white">
+            ⏱️ SVG-PWA Stoper
+        </text>
+        <text x="200" y="55" text-anchor="middle" font-family="system-ui" font-size="12" fill="rgba(255,255,255,0.8)">
+            Format demonstracyjny v1.0
+        </text>
+
+        <!-- Main timer ring container -->
+        <g transform="translate(200,250)">
+            <!-- Outer decorative ring -->
+            <circle r="170" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+
+            <!-- Progress background -->
+            <circle r="150" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="12"/>
+
+            <!-- Main progress ring (seconds) -->
+            <circle id="seconds-ring" r="150" fill="none" stroke="#4CAF50" stroke-width="12" stroke-dasharray="942.48" stroke-dashoffset="942.48" stroke-linecap="round" transform="rotate(-90)" filter="url(#glow)" style="stroke-dashoffset: 902.001px;"/>
+
+            <!-- Minutes ring -->
+            <circle r="130" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/>
+            <circle id="minutes-ring" r="130" fill="none" stroke="#FF9800" stroke-width="6" stroke-dasharray="816.81" stroke-dashoffset="816.81" stroke-linecap="round" transform="rotate(-90)" style="stroke-dashoffset: 816.81px;"/>
+
+            <!-- Center circle -->
+            <circle r="90" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.2)" stroke-width="2" filter="url(#shadow)"/>
+
+            <!-- Time display -->
+            <text id="minutes-display" x="0" y="-15" text-anchor="middle" font-family="monospace" font-size="36" font-weight="bold" fill="white">00</text>
+            <text x="0" y="-15" text-anchor="middle" font-family="monospace" font-size="36" fill="rgba(255,255,255,0.5)">:</text>
+            <text id="seconds-display" x="0" y="20" text-anchor="middle" font-family="monospace" font-size="36" font-weight="bold" fill="white">02</text>
+            <text id="milliseconds-display" x="0" y="45" text-anchor="middle" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.7)">.577</text>
+
+            <!-- Status indicator -->
+            <circle id="status-dot" r="4" cy="-60" fill="#FF9800"/>
+            <text id="status-text" y="-75" text-anchor="middle" font-family="system-ui" font-size="12" fill="white">ZATRZYMANY</text>
+        </g>
+
+        <!-- Control buttons -->
+        <g id="controls" transform="translate(200,450)">
+            <!-- Start/Stop button (center) -->
+            <g id="start-stop-button" transform="translate(0,0)" style="cursor:pointer" class="stopwatch-button">
+                <circle r="40" fill="url(#buttonGradient)" stroke="rgba(255,255,255,0.3)" stroke-width="2" filter="url(#shadow)"/>
+                <circle r="35" fill="#4CAF50" opacity="0.9"/>
+                <g id="start-stop-icon" transform="translate(0,0)" fill="white"><use href="#play-icon"/></g>
+            </g>
+
+            <!-- Reset button (left) -->
+            <g id="reset-button" transform="translate(-100,0)" style="cursor:pointer" opacity="0.7" class="stopwatch-button">
+                <circle r="30" fill="url(#buttonGradient)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+                <circle r="25" fill="#f44336"/>
+                <g transform="translate(0,0)" fill="white">
+                    <use href="#reset-icon"/>
+                </g>
+            </g>
+
+            <!-- Lap button (right) -->
+            <g id="lap-button" transform="translate(100,0)" style="cursor:pointer" opacity="0.7" class="stopwatch-button">
+                <circle r="30" fill="url(#buttonGradient)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+                <circle r="25" fill="#2196F3"/>
+                <g transform="translate(0,0)" fill="white">
+                    <use href="#lap-icon"/>
+                </g>
+            </g>
+        </g>
+
+        <!-- PWA Status Bar -->
+        <g transform="translate(0,550)">
+            <rect width="400" height="50" fill="rgba(0,0,0,0.2)"/>
+            <g id="pwa-indicators" transform="translate(20,25)">
+                <circle id="online-indicator" r="6" fill="#4CAF50"/>
+                <text x="15" y="5" font-family="system-ui" font-size="10" fill="white">ONLINE</text>
+
+                <circle id="sw-indicator" cx="80" r="6" fill="#f44336"/>
+                <text x="95" y="5" font-family="system-ui" font-size="10" fill="white">SW</text>
+
+                <circle id="storage-indicator" cx="140" r="6" fill="#4CAF50"/>
+                <text x="155" y="5" font-family="system-ui" font-size="10" fill="white">STORAGE</text>
+
+                <circle id="install-indicator" cx="230" r="6" fill="#9C27B0"/>
+                <text x="245" y="5" font-family="system-ui" font-size="10" fill="white">INSTALL</text>
+            </g>
+        </g>
+    </g>
+
+    <!-- 5. EMBEDDED HTML SECTION (for complex UI if needed) -->
+    <foreignObject x="20" y="80" width="360" height="0" style="overflow:visible">
+        <xhtml:div style="display:none" id="lap-times-container">
+            <xhtml:div style="background:rgba(0,0,0,0.5); border-radius:10px; padding:15px; color:white; font-family:system-ui; max-height:150px; overflow-y:auto;">
+                <xhtml:h3 style="margin:0 0 10px 0; font-size:14px;">📊 Czasy okrążeń</xhtml:h3>
+                <xhtml:div id="lap-times-list"></xhtml:div>
+            </xhtml:div>
+        </xhtml:div>
+    </foreignObject>
+
+    <!-- 6. STYLING SECTION -->
+    <style type="text/css"><![CDATA[
+    .stopwatch-button:hover {
+      transform: scale(1.05);
+      transition: transform 0.2s ease;
+    }
+
+    .stopwatch-button:active {
+      transform: scale(0.95);
+    }
+
+    .running #seconds-ring {
+      animation: pulse 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { stroke-opacity: 0.8; }
+      to { stroke-opacity: 1; }
+    }
+
+    .lap-time {
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+    .lap-time:last-child {
+      border-bottom: none;
+    }
+
+    #status-dot {
+      animation: statusBlink 2s ease-in-out infinite;
+    }
+
+    @keyframes statusBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* PWA Installation styles */
+    .install-ready {
+      animation: installPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes installPulse {
+      0%, 100% { fill: #9C27B0; }
+      50% { fill: #E91E63; }
+    }
+  ]]></style>
+
+    <!-- 7. APPLICATION LOGIC SECTION -->
+    <script type="application/javascript"><![CDATA[
+    // SVG-PWA Stopwatch Class
+    class SVGPWAStopwatch {
+      constructor() {
+        this.time = 0;
+        this.milliseconds = 0;
+        this.isRunning = false;
+        this.interval = null;
+        this.laps = [];
+        this.startTime = 0;
+
+        // DOM Elements
+        this.minutesDisplay = document.getElementById('minutes-display');
+        this.secondsDisplay = document.getElementById('seconds-display');
+        this.millisecondsDisplay = document.getElementById('milliseconds-display');
+        this.secondsRing = document.getElementById('seconds-ring');
+        this.minutesRing = document.getElementById('minutes-ring');
+        this.startStopIcon = document.getElementById('start-stop-icon');
+        this.startStopButton = document.getElementById('start-stop-button');
+        this.resetButton = document.getElementById('reset-button');
+        this.lapButton = document.getElementById('lap-button');
+        this.statusDot = document.getElementById('status-dot');
+        this.statusText = document.getElementById('status-text');
+        this.lapTimesContainer = document.getElementById('lap-times-container');
+        this.lapTimesList = document.getElementById('lap-times-list');
+
+        this.initEventListeners();
+        this.loadState();
+        this.updateDisplay();
+        this.initPWA();
+
+        console.log('🏃‍♂️ SVG-PWA Stopwatch initialized');
+      }
+
+      initEventListeners() {
+        this.startStopButton.addEventListener('click', () => this.toggle());
+        this.resetButton.addEventListener('click', () => this.reset());
+        this.lapButton.addEventListener('click', () => this.lap());
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+          if (e.code === 'Space') {
+            e.preventDefault();
+            this.toggle();
+          } else if (e.code === 'KeyR') {
+            this.reset();
+          } else if (e.code === 'KeyL') {
+            this.lap();
+          }
+        });
+
+        // Button hover effects
+        [this.startStopButton, this.resetButton, this.lapButton].forEach(btn => {
+          btn.classList.add('stopwatch-button');
+        });
+      }
+
+      toggle() {
+        if (this.isRunning) {
+          this.stop();
+        } else {
+          this.start();
+        }
+      }
+
+      start() {
+        this.isRunning = true;
+        this.startTime = performance.now() - (this.time * 1000 + this.milliseconds);
+
+        // Update UI - safer DOM access
+        this.startStopIcon.innerHTML = '<use href="#pause-icon"/>';
+
+        const startStopCircle = this.startStopButton.querySelector('circle:last-child');
+        if (startStopCircle) {
+          startStopCircle.setAttribute('fill', '#f44336');
+        }
+
+        this.statusText.textContent = 'DZIAŁA';
+        this.statusDot.setAttribute('fill', '#f44336');
+
+        // Add running class to SVG root
+        const svgRoot = document.querySelector('svg');
+        if (svgRoot) {
+          svgRoot.classList.add('running');
+        }
+
+        this.interval = setInterval(() => {
+          const elapsed = performance.now() - this.startTime;
+          this.time = Math.floor(elapsed / 1000);
+          this.milliseconds = Math.floor(elapsed % 1000);
+          this.updateDisplay();
+        }, 10);
+
+        this.saveState();
+        this.sendNotification('Stoper uruchomiony', 'Timer został wystartowany');
+      }
+
+      stop() {
+        this.isRunning = false;
+        clearInterval(this.interval);
+
+        // Update UI - safer DOM access
+        this.startStopIcon.innerHTML = '<use href="#play-icon"/>';
+
+        const startStopCircle = this.startStopButton.querySelector('circle:last-child');
+        if (startStopCircle) {
+          startStopCircle.setAttribute('fill', '#4CAF50');
+        }
+
+        this.statusText.textContent = 'ZATRZYMANY';
+        this.statusDot.setAttribute('fill', '#FF9800');
+
+        // Remove running class from SVG root
+        const svgRoot = document.querySelector('svg');
+        if (svgRoot) {
+          svgRoot.classList.remove('running');
+        }
+
+        this.saveState();
+        this.sendNotification('Stoper zatrzymany', `Czas: ${this.formatTime()}`);
+      }
+
+      reset() {
+        this.stop();
+        this.time = 0;
+        this.milliseconds = 0;
+        this.laps = [];
+
+        this.statusText.textContent = 'GOTOWY';
+        this.statusDot.setAttribute('fill', '#4CAF50');
+
+        this.updateDisplay();
+        this.updateLapDisplay();
+        this.saveState();
+      }
+
+      lap() {
+        if (this.isRunning) {
+          const lapTime = {
+            totalTime: this.time * 1000 + this.milliseconds,
+            time: this.time,
+            milliseconds: this.milliseconds,
+            lapNumber: this.laps.length + 1,
+            timestamp: new Date().toLocaleTimeString()
+          };
+
+          this.laps.push(lapTime);
+          this.updateLapDisplay();
+          this.saveState();
+
+          // Visual feedback
+          this.lapButton.style.transform = 'scale(1.2)';
+          setTimeout(() => {
+            this.lapButton.style.transform = '';
+          }, 150);
+        }
+      }
+
+      updateDisplay() {
+        const minutes = Math.floor(this.time / 60);
+        const seconds = this.time % 60;
+
+        this.minutesDisplay.textContent = minutes.toString().padStart(2, '0');
+        this.secondsDisplay.textContent = seconds.toString().padStart(2, '0');
+        this.millisecondsDisplay.textContent = '.' + this.milliseconds.toString().padStart(3, '0');
+
+        // Update progress rings
+        this.updateProgressRings(seconds, minutes, this.milliseconds);
+      }
+
+      updateProgressRings(seconds, minutes, ms) {
+        // Seconds ring (0-60 seconds with milliseconds)
+        const totalSeconds = seconds + ms / 1000;
+        const secondsProgress = (totalSeconds % 60) / 60;
+        const secondsCircumference = 942.48;
+        const secondsOffset = secondsCircumference - (secondsProgress * secondsCircumference);
+        this.secondsRing.style.strokeDashoffset = secondsOffset;
+
+        // Minutes ring (0-60 minutes)
+        const minutesProgress = (minutes % 60) / 60;
+        const minutesCircumference = 816.81;
+        const minutesOffset = minutesCircumference - (minutesProgress * minutesCircumference);
+        this.minutesRing.style.strokeDashoffset = minutesOffset;
+
+        // Color coding based on time
+        if (minutes >= 10) {
+          this.secondsRing.setAttribute('stroke', '#f44336'); // Red for >10min
+        } else if (minutes >= 5) {
+          this.secondsRing.setAttribute('stroke', '#FF9800'); // Orange for >5min
+        } else {
+          this.secondsRing.setAttribute('stroke', '#4CAF50'); // Green for <5min
+        }
+      }
+
+      updateLapDisplay() {
+        if (this.laps.length === 0) {
+          this.lapTimesContainer.style.display = 'none';
+          return;
+        }
+
+        this.lapTimesContainer.style.display = 'block';
+        this.lapTimesList.innerHTML = this.laps.map(lap => `
+          <div class="lap-time">
+            Okrążenie ${lap.lapNumber}: ${this.formatTimeFromMs(lap.totalTime)} (${lap.timestamp})
+          </div>
+        `).join('');
+      }
+
+      formatTime() {
+        const minutes = Math.floor(this.time / 60);
+        const seconds = this.time % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${this.milliseconds.toString().padStart(3, '0')}`;
+      }
+
+      formatTimeFromMs(totalMs) {
+        const totalSeconds = Math.floor(totalMs / 1000);
+        const ms = Math.floor(totalMs % 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${ms.toString().padStart(3, '0')}`;
+      }
+
+      saveState() {
+        const state = {
+          time: this.time,
+          milliseconds: this.milliseconds,
+          isRunning: this.isRunning,
+          laps: this.laps,
+          startTime: this.startTime,
+          lastSaved: Date.now(),
+          version: '1.0'
+        };
+        localStorage.setItem('svg-pwa-stopwatch-state', JSON.stringify(state));
+        this.updateStorageIndicator();
+      }
+
+      loadState() {
+        const saved = localStorage.getItem('svg-pwa-stopwatch-state');
+        if (saved) {
+          try {
+            const state = JSON.parse(saved);
+            this.time = state.time || 0;
+            this.milliseconds = state.milliseconds || 0;
+            this.laps = state.laps || [];
+            this.startTime = state.startTime || 0;
+
+            // Restore running state if was running recently (within 30 seconds)
+            if (state.isRunning && Date.now() - state.lastSaved < 30000) {
+              // Adjust for time passed while closed
+              const timePassed = Date.now() - state.lastSaved;
+              this.startTime = performance.now() - (state.time * 1000 + state.milliseconds + timePassed);
+              this.start();
+            }
+
+            this.updateLapDisplay();
+          } catch (e) {
+            console.warn('Failed to load saved state:', e);
+          }
+        }
+      }
+
+      // PWA Functionality
+      initPWA() {
+        this.initServiceWorker();
+        this.initManifest();
+        this.initNetworkDetection();
+        this.initInstallPrompt();
+        this.updateStorageIndicator();
+      }
+
+      initServiceWorker() {
+        if ('serviceWorker' in navigator) {
+          const swCode = `
+            const CACHE_NAME = 'svg-pwa-stopwatch-v1';
+
+            self.addEventListener('install', (event) => {
+              event.waitUntil(
+                caches.open(CACHE_NAME).then((cache) => {
+                  console.log('Service Worker cache opened');
+                  return Promise.resolve();
+                })
+              );
+            });
+
+            self.addEventListener('fetch', (event) => {
+              event.respondWith(
+                caches.match(event.request)
+                  .then((response) => response || fetch(event.request))
+                  .catch(() => new Response('Offline', { status: 200 }))
+              );
+            });
+
+            self.addEventListener('message', (event) => {
+              if (event.data && event.data.type === 'SKIP_WAITING') {
+                self.skipWaiting();
+              }
+            });
+          `;
+
+          try {
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+
+            navigator.serviceWorker.register(swUrl, { scope: '/' })
+              .then((registration) => {
+                console.log('✅ Service Worker registered');
+                this.updateSWIndicator(true);
+              })
+              .catch((error) => {
+                console.warn('⚠️ Service Worker registration failed (expected in local file):', error.message);
+                this.updateSWIndicator(false);
+              });
+          } catch (e) {
+            console.warn('Service Worker initialization failed:', e);
+            this.updateSWIndicator(false);
+          }
+        }
+      }
+
+      initManifest() {
+        const manifest = {
+          "name": "SVG-PWA Stoper",
+          "short_name": "Stoper",
+          "description": "Demonstracja formatu SVG-PWA - standalone stoper",
+          "start_url": "./",
+          "display": "standalone",
+          "orientation": "portrait",
+          "theme_color": "#667eea",
+          "background_color": "#764ba2",
+          "scope": "./",
+          "lang": "pl",
+          "icons": [
+            {
+              "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDQwMCA2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNzY0YmEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI2MDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSIyMDAiIGN5PSIyNTAiIHI9IjE1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxMiIgb3BhY2l0eT0iMC4zIi8+PGNpcmNsZSBjeD0iMjAwIiBjeT0iNDUwIiByPSI0MCIgZmlsbD0iIzRDQUY1MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBvbHlnb24gcG9pbnRzPSIxOTAsNDQyIDIxMiw0NTAgMTkwLDQ1OCIgZmlsbD0id2hpdGUiLz48dGV4dCB4PSIyMDAiIHk9IjI2MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSI0OCIgZmlsbD0id2hpdGUiIGZvbnQtd2VpZ2h0PSJib2xkIj4wMDowMDwvdGV4dD48L3N2Zz4=",
+              "sizes": "512x512",
+              "type": "image/svg+xml",
+              "purpose": "any maskable"
+            }
+          ],
+          "shortcuts": [
+            {
+              "name": "Start Timer",
+              "url": "#start",
+              "description": "Uruchom stoper"
+            },
+            {
+              "name": "Reset Timer",
+              "url": "#reset",
+              "description": "Zresetuj stoper"
+            }
+          ],
+          "categories": ["productivity", "utilities", "sports"]
+        };
+
+        // Try to add manifest only if we have access to document.head
+        try {
+          const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+          const manifestUrl = URL.createObjectURL(manifestBlob);
+
+          if (document.head) {
+            const link = document.createElement('link');
+            link.rel = 'manifest';
+            link.href = manifestUrl;
+            document.head.appendChild(link);
+          } else {
+            console.log('📱 Manifest ready but document.head not available in SVG context');
+          }
+        } catch (e) {
+          console.warn('Manifest initialization failed:', e);
+        }
+      }
+
+      initNetworkDetection() {
+        const updateNetworkStatus = () => {
+          const indicator = document.getElementById('online-indicator');
+          if (navigator.onLine) {
+            indicator.setAttribute('fill', '#4CAF50');
+          } else {
+            indicator.setAttribute('fill', '#f44336');
+          }
+        };
+
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+        updateNetworkStatus();
+      }
+
+      initInstallPrompt() {
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+
+          const indicator = document.getElementById('install-indicator');
+          indicator.classList.add('install-ready');
+
+          // Add click handler for install
+          indicator.style.cursor = 'pointer';
+          indicator.addEventListener('click', () => {
+            if (deferredPrompt) {
+              deferredPrompt.prompt();
+              deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                  indicator.setAttribute('fill', '#4CAF50');
+                  indicator.classList.remove('install-ready');
+                  this.sendNotification('Aplikacja zainstalowana', 'SVG-PWA Stoper został zainstalowany');
+                }
+                deferredPrompt = null;
+              });
+            }
+          });
+        });
+
+        window.addEventListener('appinstalled', () => {
+          const indicator = document.getElementById('install-indicator');
+          indicator.setAttribute('fill', '#4CAF50');
+          indicator.classList.remove('install-ready');
+        });
+      }
+
+      updateSWIndicator(active) {
+        const indicator = document.getElementById('sw-indicator');
+        indicator.setAttribute('fill', active ? '#4CAF50' : '#f44336');
+      }
+
+      updateStorageIndicator() {
+        const indicator = document.getElementById('storage-indicator');
+        const storageSize = new Blob([localStorage.getItem('svg-pwa-stopwatch-state') || '']).size;
+
+        if (storageSize > 0) {
+          indicator.setAttribute('fill', '#4CAF50');
+        } else {
+          indicator.setAttribute('fill', '#FF9800');
+        }
+      }
+
+      sendNotification(title, body) {
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification(title, {
+            body: body,
+            icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDQwMCA2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNjY3ZWVhIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNzY0YmEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI2MDAiIGZpbGw9InVybCgjZykiLz48Y2lyY2xlIGN4PSIyMDAiIGN5PSIyNTAiIHI9IjE1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxMiIgb3BhY2l0eT0iMC4zIi8+PGNpcmNsZSBjeD0iMjAwIiBjeT0iNDUwIiByPSI0MCIgZmlsbD0iIzRDQUY1MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PC9zdmc+',
+            badge: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA0MDAgNjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjNjY3ZWVhIi8+PGNpcmNsZSBjeD0iMjAwIiBjeT0iMzAwIiByPSIxMDAiIGZpbGw9IndoaXRlIi8+PC9zdmc+',
+            tag: 'svg-pwa-stopwatch',
+            renotify: false,
+            silent: false
+          });
+        } else if ('Notification' in window && Notification.permission === 'default') {
+          // Request permission on first interaction
+          Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+              this.sendNotification(title, body);
+            }
+          });
+        }
+      }
+
+      // Export functionality
+      exportData() {
+        const data = {
+          format: 'SVG-PWA',
+          version: '1.0',
+          app: 'Stopwatch',
+          exported: new Date().toISOString(),
+          state: {
+            time: this.time,
+            milliseconds: this.milliseconds,
+            laps: this.laps,
+            totalLaps: this.laps.length,
+            bestLap: this.laps.length > 0 ? Math.min(...this.laps.map(l => l.totalTime)) : null,
+            worstLap: this.laps.length > 0 ? Math.max(...this.laps.map(l => l.totalTime)) : null
+          },
+          metadata: {
+            userAgent: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+          }
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `svg-pwa-stopwatch-export-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        this.sendNotification('Dane wyeksportowane', 'Plik został pobrany');
+      }
+
+      // Share functionality
+      shareResults() {
+        const text = `⏱️ Czas na stoperze SVG-PWA: ${this.formatTime()}`;
+        const lapInfo = this.laps.length > 0 ? `\n📊 Okrążeń: ${this.laps.length}` : '';
+
+        if (navigator.share) {
+          navigator.share({
+            title: 'SVG-PWA Stoper - Wyniki',
+            text: text + lapInfo,
+            url: window.location.href
+          });
+        } else {
+          // Fallback - copy to clipboard
+          navigator.clipboard.writeText(text + lapInfo + `\n🔗 ${window.location.href}`).then(() => {
+            this.sendNotification('Skopiowano', 'Wyniki zostały skopiowane do schowka');
+          });
+        }
+      }
+    }
+
+    // Initialize the stopwatch when DOM is ready
+    let stopwatch;
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        stopwatch = new SVGPWAStopwatch();
+      });
+    } else {
+      stopwatch = new SVGPWAStopwatch();
+    }
+
+    // Global functions for external access
+    window.exportStopwatchData = () => stopwatch?.exportData();
+    window.shareStopwatchResults = () => stopwatch?.shareResults();
+
+    // Advanced features demonstration
+    class SVGPWAAnalytics {
+      constructor(stopwatch) {
+        this.stopwatch = stopwatch;
+        this.analytics = {
+          sessionsStarted: 0,
+          totalTimeRunning: 0,
+          averageSessionLength: 0,
+          mostUsedFeature: 'timer',
+          installationDate: null,
+          lastUsed: null
+        };
+
+        this.loadAnalytics();
+        this.trackUsage();
+      }
+
+      loadAnalytics() {
+        const saved = localStorage.getItem('svg-pwa-stopwatch-analytics');
+        if (saved) {
+          this.analytics = { ...this.analytics, ...JSON.parse(saved) };
+        } else {
+          this.analytics.installationDate = new Date().toISOString();
+        }
+      }
+
+      saveAnalytics() {
+        this.analytics.lastUsed = new Date().toISOString();
+        localStorage.setItem('svg-pwa-stopwatch-analytics', JSON.stringify(this.analytics));
+      }
+
+      trackUsage() {
+        // Track session start
+        const originalStart = this.stopwatch.start.bind(this.stopwatch);
+        this.stopwatch.start = () => {
+          this.analytics.sessionsStarted++;
+          this.saveAnalytics();
+          originalStart();
+        };
+
+        // Track feature usage
+        const originalLap = this.stopwatch.lap.bind(this.stopwatch);
+        this.stopwatch.lap = () => {
+          this.analytics.mostUsedFeature = 'laps';
+          this.saveAnalytics();
+          originalLap();
+        };
+      }
+
+      getUsageReport() {
+        const daysSinceInstall = this.analytics.installationDate ?
+          Math.floor((Date.now() - new Date(this.analytics.installationDate)) / (1000 * 60 * 60 * 24)) : 0;
+
+        return {
+          ...this.analytics,
+          daysSinceInstall,
+          averageSessionsPerDay: daysSinceInstall > 0 ? (this.analytics.sessionsStarted / daysSinceInstall).toFixed(2) : 0
+        };
+      }
+    }
+
+    // Initialize analytics
+    setTimeout(() => {
+      if (stopwatch) {
+        const analytics = new SVGPWAAnalytics(stopwatch);
+        window.getStopwatchAnalytics = () => analytics.getUsageReport();
+      }
+    }, 1000);
+
+    // Performance monitoring
+    class SVGPWAPerformance {
+      constructor() {
+        this.metrics = {
+          loadTime: 0,
+          renderTime: 0,
+          memoryUsage: 0,
+          frameRate: 0
+        };
+
+        this.measurePerformance();
+      }
+
+      measurePerformance() {
+        // Load time
+        window.addEventListener('load', () => {
+          this.metrics.loadTime = performance.now();
+          console.log(`📊 SVG-PWA Load Time: ${this.metrics.loadTime.toFixed(2)}ms`);
+        });
+
+        // Memory usage (if available)
+        if (performance.memory) {
+          this.metrics.memoryUsage = performance.memory.usedJSHeapSize;
+        }
+
+        // Frame rate monitoring
+        let frameCount = 0;
+        let lastTime = performance.now();
+
+        const countFrames = () => {
+          frameCount++;
+          const currentTime = performance.now();
+
+          if (currentTime - lastTime >= 1000) {
+            this.metrics.frameRate = frameCount;
+            frameCount = 0;
+            lastTime = currentTime;
+          }
+
+          requestAnimationFrame(countFrames);
+        };
+
+        requestAnimationFrame(countFrames);
+      }
+
+      getMetrics() {
+        return {
+          ...this.metrics,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight
+          }
+        };
+      }
+    }
+
+    // Initialize performance monitoring
+    const performance_monitor = new SVGPWAPerformance();
+    window.getPerformanceMetrics = () => performance_monitor.getMetrics();
+
+    // Advanced PWA features
+    class SVGPWAAdvanced {
+      constructor() {
+        this.initAdvancedFeatures();
+      }
+
+      initAdvancedFeatures() {
+        // Background sync (if supported)
+        if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+          navigator.serviceWorker.ready.then((registration) => {
+            return registration.sync.register('background-sync');
+          });
+        }
+
+        // Periodic background sync (if supported)
+        if ('serviceWorker' in navigator && 'periodicSync' in window.ServiceWorkerRegistration.prototype) {
+          navigator.serviceWorker.ready.then((registration) => {
+            return registration.periodicSync.register('periodic-sync', {
+              minInterval: 24 * 60 * 60 * 1000 // 24 hours
+            });
+          });
+        }
+
+        // Wake lock (keep screen on during timer)
+        this.initWakeLock();
+
+        // Badging API (show running timer in app badge)
+        this.initBadging();
+      }
+
+      async initWakeLock() {
+        if ('wakeLock' in navigator) {
+          let wakeLock = null;
+
+          const originalStart = stopwatch?.start?.bind(stopwatch);
+          const originalStop = stopwatch?.stop?.bind(stopwatch);
+
+          if (originalStart && originalStop) {
+            stopwatch.start = async () => {
+              try {
+                wakeLock = await navigator.wakeLock.request('screen');
+                console.log('🔒 Screen wake lock activated');
+              } catch (err) {
+                console.warn('Wake lock failed:', err);
+              }
+              originalStart();
+            };
+
+            stopwatch.stop = () => {
+              if (wakeLock) {
+                wakeLock.release();
+                wakeLock = null;
+                console.log('🔓 Screen wake lock released');
+              }
+              originalStop();
+            };
+          }
+        }
+      }
+
+      initBadging() {
+        if ('setAppBadge' in navigator) {
+          const updateBadge = () => {
+            if (stopwatch?.isRunning) {
+              const minutes = Math.floor(stopwatch.time / 60);
+              navigator.setAppBadge(minutes || 1);
+            } else {
+              navigator.clearAppBadge();
+            }
+          };
+
+          // Update badge every 60 seconds when running
+          setInterval(updateBadge, 60000);
+        }
+      }
+    }
+
+    // Initialize advanced features
+    setTimeout(() => {
+      new SVGPWAAdvanced();
+    }, 2000);
+
+    // Console information
+    console.log(`
+🎯 SVG-PWA Stopwatch Demo v1.0
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📱 Funkcje PWA:
+   ✅ Service Worker (offline support)
+   ✅ App Manifest (instalacja)
+   ✅ Local Storage (persistencja danych)
+   ✅ Notifications (powiadomienia)
+   ✅ Share API (udostępnianie)
+   ✅ Wake Lock (blokada ekranu)
+   ✅ Badging API (ikona z licznikiem)
+
+⌨️  Skróty klawiszowe:
+   [SPACE] - Start/Stop
+   [R] - Reset
+   [L] - Lap
+
+🔧 Funkcje deweloperskie:
+   window.exportStopwatchData() - eksport danych
+   window.shareStopwatchResults() - udostępnienie wyników
+   window.getStopwatchAnalytics() - statystyki użytkowania
+   window.getPerformanceMetrics() - metryki wydajności
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    `);
+  ]]></script>
+</svg>
