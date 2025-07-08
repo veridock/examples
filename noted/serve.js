@@ -561,7 +561,7 @@ const getManifest = () => {
         theme_color: "#2196f3",
         icons: [
             {
-                src: "data:image/svg+xml;base64," + Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" fill="#2196f3"/><path d="M48 48h96v96H48z" fill="white"/><path d="M64 64h64v8H64zm0 16h64v8H64zm0 16h48v8H64z" fill="#2196f3"/></svg>`).toString('base64'),
+                src: "data:image/svg+xml;base64," + Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" fill="#2196f3"/><path d="M48 48h96v96H48z" fill="white"/><path d="M64 64h64v8H64zm0 16h64v8H64zm0 16h48v8H64z" fill="#2196f3"/></svg>').toString('base64'),
                 sizes: "192x192",
                 type: "image/svg+xml"
             }
@@ -595,7 +595,7 @@ async function saveNotes(notes) {
 app.get('/', async (req, res) => {
     try {
         const svgContent = await getSVGApp();
-        res.setHeader('Content-Type', 'image/svg+xml');
+        res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
         res.setHeader('Cache-Control', 'no-cache');
         res.send(svgContent);
     } catch (error) {
@@ -613,6 +613,7 @@ app.get('/api/info', (req, res) => {
 });
 
 app.get('/manifest.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.json(getManifest());
 });
 
@@ -620,8 +621,10 @@ app.get('/manifest.json', (req, res) => {
 app.get('/api/notes', async (req, res) => {
     try {
         const notes = await loadNotes();
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.json(notes);
     } catch (error) {
+        console.error('Error loading notes:', error);
         res.status(500).json({ error: 'Failed to load notes' });
     }
 });
@@ -640,6 +643,7 @@ app.post('/api/notes', async (req, res) => {
         const saved = await saveNotes(notes);
 
         if (saved) {
+            res.setHeader('Content-Type', 'application/json; charset=utf-8');
             res.json({ status: 'saved', id: noteData.id });
         } else {
             res.status(500).json({ error: 'Failed to save note' });
@@ -666,6 +670,7 @@ app.delete('/api/notes/:id', async (req, res) => {
             const saved = await saveNotes(notes);
 
             if (saved) {
+                res.setHeader('Content-Type', 'application/json; charset=utf-8');
                 res.json({ status: 'deleted' });
             } else {
                 res.status(500).json({ error: 'Failed to delete note' });
@@ -705,13 +710,15 @@ function openBrowser() {
 
 // Start server
 app.listen(PORT, () => {
-    console.log('🚀 Starting NotePWA Server...');
+    console.log('🚀 Starting NotePWA Server (Node.js)...');
     console.log(`📱 Server running at http://localhost:${PORT}`);
     console.log('📝 Features: Drawing, Text notes, Save/Load, PWA support');
+    console.log('🎨 Frontend: notepwa.svg (shared with Python backend)');
     console.log('⌨️  Keyboard shortcuts: Ctrl+S (save), Ctrl+N (new), Ctrl+L (load)');
     console.log('🔧 Tool shortcuts: 1 (pen), 2 (eraser), 3 (text)');
     console.log('📱 Mobile touch support enabled');
     console.log('💾 Notes saved to: notes.json');
+    console.log('🔄 Backend info: Node.js + Express.js');
     console.log('Press Ctrl+C to stop the server\n');
 
     // Open browser

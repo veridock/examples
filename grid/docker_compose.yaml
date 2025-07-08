@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  svg_browser:
+    build: .
+    container_name: svg_browser
+    ports:
+      - "${PORT:-5000}:5000"
+    volumes:
+      # Montowanie pliku konfiguracyjnego
+      - ./.env:/app/.env:ro
+      
+      # Montowanie katalogów z plikami SVG (dostosuj do swoich potrzeb)
+      # Przykłady - odkomentuj i dostosuj ścieżki:
+      
+      # Windows:
+      # - "C:/Users/Username/Pictures/SVG:/mnt/svg1:ro"
+      # - "C:/Projects/icons:/mnt/svg2:ro"
+      
+      # Linux/Mac:
+      # - "/home/username/svg-files:/mnt/svg1:ro"
+      # - "/usr/local/share/icons:/mnt/svg2:ro"
+      # - "./test-svgs:/mnt/test:ro"
+      
+      # Przykład montowania katalogu lokalnego:
+      - "./test-svgs:/mnt/test-svgs:ro"
+      
+    environment:
+      - PORT=5000
+      - DEBUG=false
+      # Ścieżki w kontenerze - dostosuj do montowanych wolumenów
+      - SCAN_PATHS=/mnt/test-svgs
+      
+    restart: unless-stopped
+    
+    # Opcjonalne - ograniczenia zasobów
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  # Opcjonalna usługa dla trybu development
+  svg_browser-dev:
+    build: .
+    container_name: svg_browser-dev
+    ports:
+      - "5001:5000"
+    volumes:
+      - .:/app
+      - "./test-svgs:/mnt/test-svgs:ro"
+    environment:
+      - PORT=5000
+      - DEBUG=true
+      - SCAN_PATHS=/mnt/test-svgs,/app/test-svgs
+    command: python svg_browser/app.py
+    profiles:
+      - dev
+
+# Sieć (opcjonalna)
+networks:
+  default:
+    name: svg_browser-network
+
+# Wolumeny nazwane (opcjonalne)
+volumes:
+  svg_cache:
+    driver: local

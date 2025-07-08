@@ -1,0 +1,28 @@
+# MANIFEST.in - określa które pliki dołączyć do pakietu dystrybucyjnego
+
+# Dokumentacja
+include README.md
+include LICENSE
+include .env.example
+
+# Konfiguracja
+include pyproject.toml
+include requirements.txt
+include Makefile
+include Dockerfile
+include docker-compose.yml
+
+# Szablony i statyczne pliki
+recursive-include svg_browser/templates *.html
+recursive-include svg_browser/static *
+
+# Pliki testowe (opcjonalnie)
+recursive-include test-svgs *.svg
+
+# Wykluczenia
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude .DS_Store
+global-exclude .env
+global-exclude *.log
