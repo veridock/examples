@@ -1,727 +1,665 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
-  <defs>
-    <style>
-      .container {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      }
-      .week-container {
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        margin: 10px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      }
-      .nav-btn {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        margin: 5px;
-        transition: transform 0.2s;
-      }
-      .nav-btn:hover {
-        transform: translateY(-2px);
-      }
-      .btn-success {
-        background: linear-gradient(135deg, #10b981, #059669);
-      }
-      .btn-warning {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-      }
-      .btn-danger {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-      }
-      .week-title {
-        font-size: 24px;
-        font-weight: bold;
-        color: #1e293b;
-        text-align: center;
-        margin: 20px 0;
-      }
-      .week-stats {
-        background: #ecfdf5;
-        border: 2px solid #10b981;
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        margin: 20px auto;
-        max-width: 300px;
-      }
-      .stat-value {
-        font-size: 28px;
-        font-weight: bold;
-        color: #059669;
-      }
-      .stat-label {
-        font-size: 14px;
-        color: #059669;
-        margin-top: 5px;
-      }
-      .day-column {
-        background: #f8fafc;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 15px;
-        margin: 5px;
-        min-height: 400px;
-        flex: 1;
-      }
-      .day-header {
-        font-size: 16px;
-        font-weight: bold;
-        color: #2563eb;
-        text-align: center;
-        margin-bottom: 5px;
-      }
-      .day-date {
-        font-size: 12px;
-        color: #64748b;
-        text-align: center;
-        margin-bottom: 10px;
-      }
-      .day-hours {
-        font-size: 18px;
-        font-weight: bold;
-        color: #059669;
-        text-align: center;
-        margin-bottom: 15px;
-      }
-      .entry-item {
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 10px;
-        margin-bottom: 10px;
-        font-size: 12px;
-      }
-      .entry-time {
-        font-weight: bold;
-        color: #374151;
-        margin-bottom: 5px;
-      }
-      .entry-category {
-        background: #e0f2fe;
-        color: #0369a1;
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-size: 10px;
-        margin-bottom: 5px;
-        display: inline-block;
-      }
-      .entry-description {
-        color: #64748b;
-        margin-bottom: 5px;
-        line-height: 1.3;
-      }
-      .entry-project {
-        color: #059669;
-        font-size: 10px;
-        font-weight: bold;
-      }
-      .empty-day {
-        text-align: center;
-        color: #94a3b8;
-        margin-top: 50px;
-        font-style: italic;
-      }
-      .sync-panel {
-        background: #f0f9ff;
-        border: 2px solid #3b82f6;
-        border-radius: 10px;
-        padding: 15px;
-        margin: 15px 0;
-      }
-      .sync-status {
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
-      .sync-indicator {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-right: 8px;
-      }
-      .sync-active {
-        background: #10b981;
-        animation: pulse 2s infinite;
-      }
-      .sync-error {
-        background: #ef4444;
-      }
-      @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
-      }
-      .week-grid {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-      }
-      .controls-panel {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-      .import-zone {
-        border: 2px dashed #d1d5db;
-        border-radius: 8px;
-        padding: 20px;
-        text-align: center;
-        background: #f9fafb;
-        margin: 15px 0;
-        transition: border-color 0.2s;
-      }
-      .import-zone:hover {
-        border-color: #2563eb;
-        background: #f0f9ff;
-      }
-      .file-input {
-        display: none;
-      }
-    </style>
-  </defs>
-
-  <!-- Nagłówek -->
-  <rect fill="url(#headerGrad)" x="0" y="0" width="1200" height="80" rx="0"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" viewBox="0 0 1200 800" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+  <!-- Nagłówek SVG -->
   <defs>
     <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#2563eb"/>
       <stop offset="100%" style="stop-color:#1d4ed8"/>
     </linearGradient>
   </defs>
-  <text x="600" y="30" text-anchor="middle" fill="white" font-size="28" font-weight="bold">📅 Przeglądarka Tygodniowa</text>
-  <text x="600" y="55" text-anchor="middle" fill="white" font-size="16" opacity="0.9">Automatyczna synchronizacja z ewidencją dzienną</text>
+  
+  <rect fill="url(#headerGrad)" x="0" y="0" width="1200" height="70"/>
+  <text x="600" y="30" text-anchor="middle" fill="white" font-size="24" font-weight="bold">📅 Przeglądarka Tygodniowa</text>
+  <text x="600" y="55" text-anchor="middle" fill="white" font-size="14" opacity="0.9">Auto-sync z ewidencją dzienną</text>
 
-  <!-- Panel kontrolny -->
-  <foreignObject x="20" y="90" width="1160" height="180">
-    <div class="week-container container">
-      <!-- Status synchronizacji -->
-      <div class="sync-panel">
-        <div class="sync-status">
-          <span class="sync-indicator sync-active" id="syncIndicator"></span>
-          <span id="syncStatusText">Sprawdzanie synchronizacji...</span>
-        </div>
-        <div style="font-size: 12px; color: #64748b;">
-          Automatyczne odświeżanie co 10 sekund | Ostatnia aktualizacja: <span id="lastUpdateTime">-</span>
-        </div>
-      </div>
-
-      <!-- Kontrolki nawigacji -->
-      <div class="controls-panel">
-        <div>
-          <button class="nav-btn" onclick="previousWeek()">← Poprzedni tydzień</button>
-          <button class="nav-btn" onclick="nextWeek()">Następny tydzień →</button>
-          <button class="nav-btn" onclick="goToCurrentWeek()">Obecny tydzień</button>
-        </div>
-        <div>
-          <button class="nav-btn btn-success" onclick="exportWeekCSV()">📊 Eksport CSV</button>
-          <button class="nav-btn btn-success" onclick="exportWeekJSON()">📄 Eksport JSON</button>
-          <button class="nav-btn btn-warning" onclick="importData()">📂 Import</button>
-          <button class="nav-btn btn-danger" onclick="clearWeek()">🗑️ Wyczyść tydzień</button>
-        </div>
-      </div>
-
-      <!-- Import zone -->
-      <div class="import-zone" onclick="importData()" id="importZone">
-        <div style="font-size: 16px; margin-bottom: 10px;">📂 Przeciągnij pliki CSV/JSON lub kliknij aby zaimportować</div>
-        <div style="font-size: 12px; color: #64748b;">Obsługuje formaty z ewidencji dziennej</div>
-        <input type="file" class="file-input" id="fileInput" accept=".csv,.json" multiple>
-      </div>
-    </div>
-  </foreignObject>
-
-  <!-- Tytuł tygodnia i statystyki -->
-  <foreignObject x="20" y="280" width="1160" height="100">
-    <div class="week-container container">
-      <h2 class="week-title" id="weekTitle">Tydzień: 6-12 stycznia 2025</h2>
-      <div class="week-stats">
-        <div class="stat-value" id="weekTotalHours">0.0</div>
-        <div class="stat-label">Godzin w tygodniu</div>
-      </div>
-    </div>
-  </foreignObject>
-
-  <!-- Siatka dni tygodnia -->
-  <foreignObject x="20" y="390" width="1160" height="480">
-    <div class="week-container container">
-      <div class="week-grid" id="weekGrid">
-        <!-- 7 kolumn dni będzie generowanych dynamicznie -->
-      </div>
-    </div>
-  </foreignObject>
-
-  <!-- JavaScript -->
-  <script><![CDATA[
-    let currentWeekStart = new Date();
-    let allEntries = [];
-    let syncInterval;
-    
-    const dayNames = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
-    
-    // Inicjalizacja
-    document.addEventListener('DOMContentLoaded', function() {
-      setCurrentWeekStart();
-      initializeApp();
-    });
-
-    function initializeApp() {
-      setupEventListeners();
-      loadAndSyncData();
-      renderWeek();
-      startAutoSync();
-    }
-
-    function setCurrentWeekStart() {
-      const today = new Date();
-      const dayOfWeek = today.getDay();
-      const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-      currentWeekStart = new Date(today);
-      currentWeekStart.setDate(today.getDate() + mondayOffset);
-      currentWeekStart.setHours(0, 0, 0, 0);
-    }
-
-    function setupEventListeners() {
-      const fileInput = document.getElementById('fileInput');
-      fileInput.addEventListener('change', handleFileImport);
+  <!-- Główna aplikacja HTML -->
+  <foreignObject x="0" y="70" width="1200" height="730">
+    <xhtml:div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; height: 100%; box-sizing: border-box;">
       
-      // Drag & drop
-      const importZone = document.getElementById('importZone');
-      importZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        importZone.style.borderColor = '#2563eb';
-        importZone.style.background = '#eff6ff';
-      });
-      
-      importZone.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        importZone.style.borderColor = '#d1d5db';
-        importZone.style.background = '#f9fafb';
-      });
-      
-      importZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        importZone.style.borderColor = '#d1d5db';
-        importZone.style.background = '#f9fafb';
-        
-        const files = Array.from(e.dataTransfer.files);
-        processImportFiles(files);
-      });
-    }
-
-    function loadAndSyncData() {
-      try {
-        // Ładowanie z localStorage ewidencji dziennej
-        const dailyData = localStorage.getItem('dailyTimeEntries');
-        const weeklyData = localStorage.getItem('weeklyTimeEntries');
-        
-        let loadedEntries = [];
-        
-        if (dailyData) {
-          loadedEntries = loadedEntries.concat(JSON.parse(dailyData));
+      <!-- Stylowanie CSS -->
+      <xhtml:style>
+        .app-container {
+          max-width: 1160px;
+          margin: 0 auto;
         }
-        
-        if (weeklyData) {
-          const weekly = JSON.parse(weeklyData);
-          // Dodaj tylko te, które nie są już w daily
-          weekly.forEach(entry => {
-            if (!loadedEntries.find(e => e.id === entry.id)) {
-              loadedEntries.push(entry);
-            }
-          });
+        .card {
+          background: white;
+          border-radius: 15px;
+          padding: 20px;
+          margin-bottom: 20px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
+        .controls-panel {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+        .btn {
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
+          color: white;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          margin-right: 8px;
+          transition: transform 0.2s;
+        }
+        .btn:hover {
+          transform: translateY(-2px);
+        }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .week-title {
+          font-size: 22px;
+          font-weight: bold;
+          color: #1e293b;
+          text-align: center;
+          margin: 15px 0;
+        }
+        .week-stats {
+          background: #ecfdf5;
+          border: 2px solid #10b981;
+          border-radius: 10px;
+          padding: 15px;
+          text-align: center;
+          margin: 15px auto;
+          max-width: 250px;
+        }
+        .stat-value {
+          font-size: 24px;
+          font-weight: bold;
+          color: #059669;
+        }
+        .stat-label {
+          font-size: 12px;
+          color: #059669;
+          margin-top: 5px;
+        }
+        .sync-panel {
+          background: #f0f9ff;
+          border: 2px solid #3b82f6;
+          border-radius: 10px;
+          padding: 12px;
+          margin-bottom: 15px;
+          font-size: 13px;
+        }
+        .sync-indicator {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          margin-right: 8px;
+          background: #10b981;
+          animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+          0% { opacity: 1; }
+          50% { opacity: 0.5; }
+          100% { opacity: 1; }
+        }
+        .week-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 12px;
+          margin-top: 15px;
+        }
+        .day-column {
+          background: #f8fafc;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 12px;
+          min-height: 350px;
+        }
+        .day-header {
+          font-size: 14px;
+          font-weight: bold;
+          color: #2563eb;
+          text-align: center;
+          margin-bottom: 5px;
+        }
+        .day-date {
+          font-size: 11px;
+          color: #64748b;
+          text-align: center;
+          margin-bottom: 8px;
+        }
+        .day-hours {
+          font-size: 16px;
+          font-weight: bold;
+          color: #059669;
+          text-align: center;
+          margin-bottom: 12px;
+        }
+        .entry-item {
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          padding: 8px;
+          margin-bottom: 8px;
+          font-size: 11px;
+        }
+        .entry-time {
+          font-weight: bold;
+          color: #374151;
+          margin-bottom: 3px;
+        }
+        .entry-category {
+          background: #e0f2fe;
+          color: #0369a1;
+          padding: 1px 4px;
+          border-radius: 3px;
+          font-size: 9px;
+          margin-bottom: 3px;
+          display: inline-block;
+        }
+        .entry-description {
+          color: #64748b;
+          margin-bottom: 3px;
+          line-height: 1.2;
+        }
+        .entry-project {
+          color: #059669;
+          font-size: 9px;
+          font-weight: bold;
+        }
+        .empty-day {
+          text-align: center;
+          color: #94a3b8;
+          margin-top: 30px;
+          font-style: italic;
+          font-size: 11px;
+        }
+        .import-zone {
+          border: 2px dashed #d1d5db;
+          border-radius: 8px;
+          padding: 15px;
+          text-align: center;
+          background: #f9fafb;
+          margin: 10px 0;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .import-zone:hover {
+          border-color: #2563eb;
+          background: #f0f9ff;
+        }
+        .notification {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 1000;
+          padding: 12px 20px;
+          border-radius: 8px;
+          color: white;
+          font-size: 14px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .notification-success { background: #10b981; }
+        .notification-error { background: #ef4444; }
+      </xhtml:style>
+
+      <xhtml:div class="app-container">
         
-        allEntries = loadedEntries;
-        updateSyncStatus('success', `Zsynchronizowano ${allEntries.length} wpisów`);
+        <!-- Panel kontrolny -->
+        <xhtml:div class="card">
+          <!-- Status synchronizacji -->
+          <xhtml:div class="sync-panel">
+            <xhtml:span class="sync-indicator"></xhtml:span>
+            <xhtml:span id="syncStatusText">Sprawdzanie synchronizacji...</xhtml:span>
+            <xhtml:div style="font-size: 11px; color: #64748b; margin-top: 5px;">
+              Auto-sync co 10s | Ostatnia aktualizacja: <xhtml:span id="lastUpdateTime">-</xhtml:span>
+            </xhtml:div>
+          </xhtml:div>
+
+          <!-- Kontrolki -->
+          <xhtml:div class="controls-panel">
+            <xhtml:div>
+              <xhtml:button class="btn" onclick="previousWeek()">← Poprzedni</xhtml:button>
+              <xhtml:button class="btn" onclick="nextWeek()">Następny →</xhtml:button>
+              <xhtml:button class="btn" onclick="goToCurrentWeek()">Obecny tydzień</xhtml:button>
+            </xhtml:div>
+            <xhtml:div>
+              <xhtml:button class="btn btn-success" onclick="exportWeekCSV()">📊 CSV</xhtml:button>
+              <xhtml:button class="btn btn-success" onclick="exportWeekJSON()">📄 JSON</xhtml:button>
+              <xhtml:button class="btn btn-warning" onclick="importData()">📂 Import</xhtml:button>
+              <xhtml:button class="btn btn-danger" onclick="clearWeek()">🗑️ Wyczyść</xhtml:button>
+            </xhtml:div>
+          </xhtml:div>
+
+          <!-- Import zone -->
+          <xhtml:div class="import-zone" onclick="importData()">
+            <xhtml:div style="font-size: 14px; margin-bottom: 5px;">📂 Przeciągnij pliki CSV/JSON lub kliknij</xhtml:div>
+            <xhtml:div style="font-size: 11px; color: #64748b;">Obsługuje formaty z ewidencji dziennej</xhtml:div>
+            <xhtml:input type="file" id="fileInput" accept=".csv,.json" multiple="multiple" style="display: none;" />
+          </xhtml:div>
+        </xhtml:div>
+
+        <!-- Tytuł i statystyki -->
+        <xhtml:div class="card">
+          <xhtml:h2 class="week-title" id="weekTitle">Tydzień: 6-12 stycznia 2025</xhtml:h2>
+          <xhtml:div class="week-stats">
+            <xhtml:div class="stat-value" id="weekTotalHours">0.0</xhtml:div>
+            <xhtml:div class="stat-label">Godzin w tygodniu</xhtml:div>
+          </xhtml:div>
+        </xhtml:div>
+
+        <!-- Siatka dni -->
+        <xhtml:div class="card">
+          <xhtml:div class="week-grid" id="weekGrid">
+            <!-- Dni będą generowane dynamicznie -->
+          </xhtml:div>
+        </xhtml:div>
+      </xhtml:div>
+
+      <!-- JavaScript -->
+      <xhtml:script>
+        let currentWeekStart = new Date();
+        let allEntries = [];
+        let syncInterval;
         
-      } catch (error) {
-        console.error('Błąd ładowania danych:', error);
-        updateSyncStatus('error', 'Błąd synchronizacji danych');
-      }
-    }
-
-    function startAutoSync() {
-      // Synchronizacja co 10 sekund
-      syncInterval = setInterval(() => {
-        loadAndSyncData();
-        updateWeekStats();
-        updateLastUpdateTime();
-      }, 10000);
-      
-      updateLastUpdateTime();
-    }
-
-    function updateSyncStatus(status, message) {
-      const indicator = document.getElementById('syncIndicator');
-      const statusText = document.getElementById('syncStatusText');
-      
-      indicator.className = `sync-indicator sync-${status}`;
-      statusText.textContent = message;
-    }
-
-    function updateLastUpdateTime() {
-      document.getElementById('lastUpdateTime').textContent = 
-        new Date().toLocaleTimeString('pl-PL');
-    }
-
-    function renderWeek() {
-      updateWeekTitle();
-      renderWeekGrid();
-      updateWeekStats();
-    }
-
-    function updateWeekTitle() {
-      const weekEnd = new Date(currentWeekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-      
-      const startStr = formatDateShort(currentWeekStart);
-      const endStr = formatDateShort(weekEnd);
-      
-      document.getElementById('weekTitle').textContent = 
-        `Tydzień: ${startStr} - ${endStr}`;
-    }
-
-    function renderWeekGrid() {
-      const grid = document.getElementById('weekGrid');
-      grid.innerHTML = '';
-      
-      for (let i = 0; i < 7; i++) {
-        const dayDate = new Date(currentWeekStart);
-        dayDate.setDate(dayDate.getDate() + i);
-        const dayDateStr = formatDateISO(dayDate);
+        const dayNames = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
         
-        const dayEntries = allEntries.filter(entry => entry.date === dayDateStr);
-        const dayHours = dayEntries.reduce((sum, entry) => sum + parseFloat(entry.duration || 0), 0);
-        
-        const dayColumn = document.createElement('div');
-        dayColumn.className = 'day-column';
-        
-        dayColumn.innerHTML = `
-          <div class="day-header">${dayNames[i]}</div>
-          <div class="day-date">${formatDateShort(dayDate)}</div>
-          <div class="day-hours">${dayHours.toFixed(1)}h</div>
-          ${dayEntries.length === 0 ? 
-            '<div class="empty-day">Brak wpisów</div>' :
-            dayEntries.map(entry => `
-              <div class="entry-item">
-                <div class="entry-time">${entry.startTime} - ${entry.endTime} (${entry.duration}h)</div>
-                <div class="entry-category">${entry.category}</div>
-                <div class="entry-description">${truncateText(entry.description, 60)}</div>
-                ${entry.project ? `<div class="entry-project">📁 ${entry.project}</div>` : ''}
-              </div>
-            `).join('')
-          }
-        `;
-        
-        grid.appendChild(dayColumn);
-      }
-    }
-
-    function updateWeekStats() {
-      const weekEnd = new Date(currentWeekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-      
-      const weekEntries = allEntries.filter(entry => {
-        const entryDate = new Date(entry.date);
-        return entryDate >= currentWeekStart && entryDate <= weekEnd;
-      });
-      
-      const totalHours = weekEntries.reduce((sum, entry) => sum + parseFloat(entry.duration || 0), 0);
-      document.getElementById('weekTotalHours').textContent = totalHours.toFixed(1);
-    }
-
-    function previousWeek() {
-      currentWeekStart.setDate(currentWeekStart.getDate() - 7);
-      renderWeek();
-    }
-
-    function nextWeek() {
-      currentWeekStart.setDate(currentWeekStart.getDate() + 7);
-      renderWeek();
-    }
-
-    function goToCurrentWeek() {
-      setCurrentWeekStart();
-      renderWeek();
-    }
-
-    function exportWeekCSV() {
-      const weekEnd = new Date(currentWeekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-      
-      const weekEntries = allEntries.filter(entry => {
-        const entryDate = new Date(entry.date);
-        return entryDate >= currentWeekStart && entryDate <= weekEnd;
-      });
-      
-      if (weekEntries.length === 0) {
-        alert('Brak wpisów w tym tygodniu!');
-        return;
-      }
-      
-      const headers = ['Data', 'Dzień tygodnia', 'Godzina rozpoczęcia', 'Godzina zakończenia', 'Czas trwania (h)', 'Kategoria', 'Opis czynności', 'Projekt', 'Data utworzenia'];
-      
-      const csvData = weekEntries
-        .sort((a, b) => a.date.localeCompare(b.date) || a.startTime.localeCompare(b.startTime))
-        .map(entry => {
-          const entryDate = new Date(entry.date);
-          const dayIndex = entryDate.getDay() === 0 ? 6 : entryDate.getDay() - 1;
-          
-          return [
-            entry.date,
-            dayNames[dayIndex],
-            entry.startTime,
-            entry.endTime,
-            entry.duration,
-            entry.category,
-            `"${(entry.description || '').replace(/"/g, '""')}"`,
-            entry.project || '',
-            entry.created || ''
-          ];
+        // Inicjalizacja
+        window.addEventListener('load', function() {
+          setCurrentWeekStart();
+          initializeApp();
         });
-      
-      const csvContent = [headers, ...csvData]
-        .map(row => row.join(','))
-        .join('\n');
-      
-      const startStr = formatDateFile(currentWeekStart);
-      const endStr = formatDateFile(weekEnd);
-      
-      downloadFile(csvContent, `ewidencja-tydzien-${startStr}-${endStr}.csv`, 'text/csv');
-      showNotification('Eksport CSV tygodnia zakończony!');
-    }
 
-    function exportWeekJSON() {
-      const weekEnd = new Date(currentWeekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-      
-      const weekEntries = allEntries.filter(entry => {
-        const entryDate = new Date(entry.date);
-        return entryDate >= currentWeekStart && entryDate <= weekEnd;
-      });
-      
-      if (weekEntries.length === 0) {
-        alert('Brak wpisów w tym tygodniu!');
-        return;
-      }
-      
-      const exportData = {
-        metadata: {
-          exportDate: new Date().toISOString(),
-          weekStart: formatDateISO(currentWeekStart),
-          weekEnd: formatDateISO(weekEnd),
-          totalEntries: weekEntries.length,
-          totalHours: weekEntries.reduce((sum, e) => sum + parseFloat(e.duration || 0), 0).toFixed(2),
-          version: '1.0'
-        },
-        entries: weekEntries.sort((a, b) => a.date.localeCompare(b.date) || a.startTime.localeCompare(b.startTime))
-      };
-      
-      const jsonContent = JSON.stringify(exportData, null, 2);
-      const startStr = formatDateFile(currentWeekStart);
-      const endStr = formatDateFile(weekEnd);
-      
-      downloadFile(jsonContent, `ewidencja-tydzien-${startStr}-${endStr}.json`, 'application/json');
-      showNotification('Eksport JSON tygodnia zakończony!');
-    }
+        function initializeApp() {
+          setupEventListeners();
+          loadAndSyncData();
+          renderWeek();
+          startAutoSync();
+        }
 
-    function importData() {
-      document.getElementById('fileInput').click();
-    }
+        function setCurrentWeekStart() {
+          const today = new Date();
+          const dayOfWeek = today.getDay();
+          const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+          currentWeekStart = new Date(today);
+          currentWeekStart.setDate(today.getDate() + mondayOffset);
+          currentWeekStart.setHours(0, 0, 0, 0);
+        }
 
-    function handleFileImport(event) {
-      const files = Array.from(event.target.files);
-      processImportFiles(files);
-      event.target.value = ''; // Reset
-    }
+        function setupEventListeners() {
+          const fileInput = document.getElementById('fileInput');
+          fileInput.addEventListener('change', handleFileImport);
+        }
 
-    function processImportFiles(files) {
-      if (files.length === 0) return;
-      
-      let processedFiles = 0;
-      let importedEntries = 0;
-      
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
+        function loadAndSyncData() {
           try {
-            let newEntries = [];
+            const dailyData = localStorage.getItem('dailyTimeEntries');
+            const weeklyData = localStorage.getItem('weeklyTimeEntries');
             
-            if (file.name.endsWith('.json')) {
-              const data = JSON.parse(e.target.result);
-              newEntries = data.entries || data;
-            } else if (file.name.endsWith('.csv')) {
-              newEntries = parseCSV(e.target.result);
+            let loadedEntries = [];
+            
+            if (dailyData) {
+              loadedEntries = loadedEntries.concat(JSON.parse(dailyData));
             }
             
-            // Dodaj nowe wpisy (bez duplikatów)
-            newEntries.forEach(entry => {
-              if (!allEntries.find(existing => 
-                existing.date === entry.date && 
-                existing.startTime === entry.startTime && 
-                existing.description === entry.description
-              )) {
-                entry.id = entry.id || Date.now() + Math.random();
-                allEntries.push(entry);
-                importedEntries++;
-              }
-            });
-            
-            processedFiles++;
-            if (processedFiles === files.length) {
-              // Zapisz zaimportowane dane
-              localStorage.setItem('weeklyTimeEntries', JSON.stringify(allEntries));
-              renderWeek();
-              showNotification(`Zaimportowano ${importedEntries} nowych wpisów z ${files.length} plików!`);
+            if (weeklyData) {
+              const weekly = JSON.parse(weeklyData);
+              weekly.forEach(entry =&gt; {
+                if (!loadedEntries.find(e => e.id === entry.id)) {
+                  loadedEntries.push(entry);
+                }
+              });
             }
+            
+            allEntries = loadedEntries;
+            updateSyncStatus('Zsynchronizowano ' + allEntries.length + ' wpisów');
             
           } catch (error) {
-            console.error('Błąd importu:', error);
-            showNotification(`Błąd importu pliku: ${file.name}`, 'error');
+            console.error('Błąd ładowania danych:', error);
+            updateSyncStatus('Błąd synchronizacji danych');
           }
-        };
-        
-        reader.readAsText(file, 'UTF-8');
-      });
-    }
-
-    function parseCSV(csvText) {
-      const lines = csvText.split('\n');
-      const headers = lines[0].split(',').map(h => h.trim());
-      const entries = [];
-      
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
-        
-        const values = parseCSVLine(line);
-        if (values.length < 3) continue;
-        
-        const entry = {
-          id: Date.now() + i,
-          date: values[0] || '',
-          startTime: values[1] || values[2] || '',
-          endTime: values[2] || values[3] || '',
-          duration: values[3] || values[4] || '0',
-          category: values[4] || values[5] || 'Inne B+R',
-          description: values[5] || values[6] || '',
-          project: values[6] || values[7] || '',
-          created: values[7] || values[8] || new Date().toISOString()
-        };
-        
-        // Walidacja podstawowa
-        if (entry.date && entry.startTime && entry.endTime) {
-          entries.push(entry);
         }
-      }
-      
-      return entries;
-    }
 
-    function parseCSVLine(line) {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
-      
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        
-        if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-          result.push(current.trim().replace(/^"|"$/g, ''));
-          current = '';
-        } else {
-          current += char;
+        function startAutoSync() {
+          syncInterval = setInterval(function() {
+            loadAndSyncData();
+            updateWeekStats();
+            updateLastUpdateTime();
+          }, 10000);
+          
+          updateLastUpdateTime();
         }
-      }
-      
-      result.push(current.trim().replace(/^"|"$/g, ''));
-      return result;
-    }
 
-    function clearWeek() {
-      if (!confirm('Usunąć wszystkie wpisy z tego tygodnia? Ta operacja jest nieodwracalna!')) {
-        return;
-      }
-      
-      const weekEnd = new Date(currentWeekStart);
-      weekEnd.setDate(weekEnd.getDate() + 6);
-      
-      const entriesBeforeCount = allEntries.length;
-      allEntries = allEntries.filter(entry => {
-        const entryDate = new Date(entry.date);
-        return !(entryDate >= currentWeekStart && entryDate <= weekEnd);
-      });
-      
-      localStorage.setItem('weeklyTimeEntries', JSON.stringify(allEntries));
-      renderWeek();
-      
-      const removedCount = entriesBeforeCount - allEntries.length;
-      showNotification(`Usunięto ${removedCount} wpisów z tego tygodnia!`);
-    }
-
-    function downloadFile(content, filename, contentType) {
-      const blob = new Blob([content], { type: contentType + ';charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
-
-    function showNotification(message, type = 'success') {
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; z-index: 1000;
-        background: ${type === 'error' ? '#ef4444' : '#10b981'};
-        color: white; padding: 15px 20px; border-radius: 8px;
-        font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        max-width: 400px; word-wrap: break-word;
-      `;
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
+        function updateSyncStatus(message) {
+          document.getElementById('syncStatusText').textContent = message;
         }
-      }, 4000);
-    }
 
-    function truncateText(text, maxLength) {
-      if (!text) return '';
-      return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-    }
+        function updateLastUpdateTime() {
+          document.getElementById('lastUpdateTime').textContent = 
+            new Date().toLocaleTimeString('pl-PL');
+        }
 
-    function formatDateShort(date) {
-      return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}`;
-    }
+        function renderWeek() {
+          updateWeekTitle();
+          renderWeekGrid();
+          updateWeekStats();
+        }
 
-    function formatDateISO(date) {
-      return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-    }
+        function updateWeekTitle() {
+          const weekEnd = new Date(currentWeekStart);
+          weekEnd.setDate(weekEnd.getDate() + 6);
+          
+          const startStr = formatDateShort(currentWeekStart);
+          const endStr = formatDateShort(weekEnd);
+          
+          document.getElementById('weekTitle').textContent = 
+            'Tydzień: ' + startStr + ' - ' + endStr;
+        }
 
-    function formatDateFile(date) {
-      return formatDateISO(date);
-    }
+        function renderWeekGrid() {
+          const grid = document.getElementById('weekGrid');
+          grid.innerHTML = '';
+          
+          for (let i = 0; i &lt; 7; i++) {
+            const dayDate = new Date(currentWeekStart);
+            dayDate.setDate(dayDate.getDate() + i);
+            const dayDateStr = formatDateISO(dayDate);
+            
+            const dayEntries = allEntries.filter(entry => entry.date === dayDateStr);
+            const dayHours = dayEntries.reduce((sum, entry) =&gt; sum + parseFloat(entry.duration || 0), 0);
+            
+            const dayColumn = document.createElement('div');
+            dayColumn.className = 'day-column';
+            
+            let dayHTML = '';
+            dayHTML += '&lt;div class="day-header"&gt;' + dayNames[i] + '&lt;/div&gt;';
+            dayHTML += '&lt;div class="day-date"&gt;' + formatDateShort(dayDate) + '&lt;/div&gt;';
+            dayHTML += '&lt;div class="day-hours"&gt;' + dayHours.toFixed(1) + 'h&lt;/div&gt;';
+            
+            if (dayEntries.length === 0) {
+              dayHTML += '&lt;div class="empty-day"&gt;Brak wpisów&lt;/div&gt;';
+            } else {
+              dayEntries.forEach(entry =&gt; {
+                dayHTML += '&lt;div class="entry-item"&gt;';
+                dayHTML += '&lt;div class="entry-time"&gt;' + entry.startTime + ' - ' + entry.endTime + ' (' + entry.duration + 'h)&lt;/div&gt;';
+                dayHTML += '&lt;div class="entry-category"&gt;' + entry.category + '&lt;/div&gt;';
+                dayHTML += '&lt;div class="entry-description"&gt;' + truncateText(entry.description, 50) + '&lt;/div&gt;';
+                if (entry.project) {
+                  dayHTML += '&lt;div class="entry-project"&gt;📁 ' + entry.project + '&lt;/div&gt;';
+                }
+                dayHTML += '&lt;/div&gt;';
+              });
+            }
+            
+            dayColumn.innerHTML = dayHTML;
+            grid.appendChild(dayColumn);
+          }
+        }
 
-    // Cleanup przy zamknięciu
-    window.addEventListener('beforeunload', () => {
-      if (syncInterval) {
-        clearInterval(syncInterval);
-      }
-    });
-  ]]></script>
+        function updateWeekStats() {
+          const weekEnd = new Date(currentWeekStart);
+          weekEnd.setDate(weekEnd.getDate() + 6);
+          
+          const weekEntries = allEntries.filter(entry => {
+            const entryDate = new Date(entry.date);
+            return entryDate &gt;= currentWeekStart &amp;&amp; entryDate &lt;= weekEnd;
+          });
+          
+          const totalHours = weekEntries.reduce((sum, entry) =&gt; sum + parseFloat(entry.duration || 0), 0);
+          document.getElementById('weekTotalHours').textContent = totalHours.toFixed(1);
+        }
+
+        function previousWeek() {
+          currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+          renderWeek();
+        }
+
+        function nextWeek() {
+          currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+          renderWeek();
+        }
+
+        function goToCurrentWeek() {
+          setCurrentWeekStart();
+          renderWeek();
+        }
+
+        function exportWeekCSV() {
+          const weekEnd = new Date(currentWeekStart);
+          weekEnd.setDate(weekEnd.getDate() + 6);
+          
+          const weekEntries = allEntries.filter(entry => {
+            const entryDate = new Date(entry.date);
+            return entryDate >= currentWeekStart && entryDate <= weekEnd;
+          });
+          
+          if (weekEntries.length === 0) {
+            showNotification('Brak wpisów w tym tygodniu!', 'error');
+            return;
+          }
+          
+          const headers = ['Data', 'Dzień', 'Start', 'Koniec', 'Czas (h)', 'Kategoria', 'Opis', 'Projekt'];
+          
+          const csvData = weekEntries
+            .sort((a, b) =&gt; a.date.localeCompare(b.date) || a.startTime.localeCompare(b.startTime))
+            .map(entry =&gt; {
+              const entryDate = new Date(entry.date);
+              const dayIndex = entryDate.getDay() === 0 ? 6 : entryDate.getDay() - 1;
+              
+              return [
+                entry.date,
+                dayNames[dayIndex],
+                entry.startTime,
+                entry.endTime,
+                entry.duration,
+                entry.category,
+                '"' + (entry.description || '').replace(/"/g, '""') + '"',
+                entry.project || ''
+              ];
+            });
+          
+          const csvContent = [headers, ...csvData].map(row =&gt; row.join(',')).join('\n');
+          
+          const startStr = formatDateFile(currentWeekStart);
+          const endStr = formatDateFile(weekEnd);
+          
+          downloadFile(csvContent, 'tydzien-' + startStr + '-' + endStr + '.csv', 'text/csv');
+          showNotification('Eksport CSV zakończony!');
+        }
+
+        function exportWeekJSON() {
+          const weekEnd = new Date(currentWeekStart);
+          weekEnd.setDate(weekEnd.getDate() + 6);
+          
+          const weekEntries = allEntries.filter(entry => {
+            const entryDate = new Date(entry.date);
+            return entryDate >= currentWeekStart && entryDate <= weekEnd;
+          });
+          
+          if (weekEntries.length === 0) {
+            showNotification('Brak wpisów w tym tygodniu!', 'error');
+            return;
+          }
+          
+          const exportData = {
+            metadata: {
+              exportDate: new Date().toISOString(),
+              weekStart: formatDateISO(currentWeekStart),
+              weekEnd: formatDateISO(weekEnd),
+              totalEntries: weekEntries.length,
+              totalHours: weekEntries.reduce((sum, e) =&gt; sum + parseFloat(e.duration || 0), 0).toFixed(2),
+              version: '1.0'
+            },
+            entries: weekEntries.sort((a, b) =&gt; a.date.localeCompare(b.date) || a.startTime.localeCompare(b.startTime))
+          };
+          
+          const jsonContent = JSON.stringify(exportData, null, 2);
+          const startStr = formatDateFile(currentWeekStart);
+          const endStr = formatDateFile(weekEnd);
+          
+          downloadFile(jsonContent, 'tydzien-' + startStr + '-' + endStr + '.json', 'application/json');
+          showNotification('Eksport JSON zakończony!');
+        }
+
+        function importData() {
+          document.getElementById('fileInput').click();
+        }
+
+        function handleFileImport(event) {
+          const files = Array.from(event.target.files);
+          processImportFiles(files);
+          event.target.value = '';
+        }
+
+        function processImportFiles(files) {
+          if (files.length === 0) return;
+          
+          let processedFiles = 0;
+          let importedEntries = 0;
+          
+          files.forEach(file =&gt; {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              try {
+                let newEntries = [];
+                
+                if (file.name.endsWith('.json')) {
+                  const data = JSON.parse(e.target.result);
+                  newEntries = data.entries || data;
+                } else if (file.name.endsWith('.csv')) {
+                  newEntries = parseCSV(e.target.result);
+                }
+                
+                newEntries.forEach(entry =&gt; {
+                  if (!allEntries.find(existing => 
+                    existing.date === entry.date && 
+                    existing.startTime === entry.startTime && 
+                    existing.description === entry.description
+                  )) {
+                    entry.id = entry.id || Date.now() + Math.random();
+                    allEntries.push(entry);
+                    importedEntries++;
+                  }
+                });
+                
+                processedFiles++;
+                if (processedFiles === files.length) {
+                  localStorage.setItem('weeklyTimeEntries', JSON.stringify(allEntries));
+                  renderWeek();
+                  showNotification('Zaimportowano ' + importedEntries + ' nowych wpisów!');
+                }
+                
+              } catch (error) {
+                console.error('Błąd importu:', error);
+                showNotification('Błąd importu: ' + file.name, 'error');
+              }
+            };
+            
+            reader.readAsText(file, 'UTF-8');
+          });
+        }
+
+        function parseCSV(csvText) {
+          const lines = csvText.split('\n');
+          const entries = [];
+          
+          for (let i = 1; i &lt; lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            const values = line.split(',');
+            if (values.length &lt; 5) continue;
+            
+            const entry = {
+              id: Date.now() + i,
+              date: values[0] || '',
+              startTime: values[1] || values[2] || '',
+              endTime: values[2] || values[3] || '',
+              duration: values[3] || values[4] || '0',
+              category: values[4] || values[5] || 'Inne B+R',
+              description: (values[5] || values[6] || '').replace(/"/g, ''),
+              project: values[6] || values[7] || '',
+              created: new Date().toISOString()
+            };
+            
+            if (entry.date && entry.startTime && entry.endTime) {
+              entries.push(entry);
+            }
+          }
+          
+          return entries;
+        }
+
+        function clearWeek() {
+          if (!confirm('Usunąć wszystkie wpisy z tego tygodnia?')) {
+            return;
+          }
+          
+          const weekEnd = new Date(currentWeekStart);
+          weekEnd.setDate(weekEnd.getDate() + 6);
+          
+          const entriesBeforeCount = allEntries.length;
+          allEntries = allEntries.filter(entry =&gt; {
+            const entryDate = new Date(entry.date);
+            return !(entryDate &gt;= currentWeekStart &amp;&amp; entryDate &lt;= weekEnd);
+          });
+          
+          localStorage.setItem('weeklyTimeEntries', JSON.stringify(allEntries));
+          renderWeek();
+          
+          const removedCount = entriesBeforeCount - allEntries.length;
+          showNotification('Usunięto ' + removedCount + ' wpisów!');
+        }
+
+        function downloadFile(content, filename, contentType) {
+          const blob = new Blob([content], { type: contentType + ';charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }
+
+        function showNotification(message, type) {
+          const notification = document.createElement('div');
+          notification.className = 'notification notification-' + (type || 'success');
+          notification.textContent = message;
+          document.body.appendChild(notification);
+          
+          setTimeout(function() {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 3000);
+        }
+
+        function truncateText(text, maxLength) {
+          if (!text) return '';
+          return text.length &gt; maxLength ? text.substring(0, maxLength) + '...' : text;
+        }
+
+        function formatDateShort(date) {
+          return date.getDate().toString().padStart(2, '0') + '.' + (date.getMonth() + 1).toString().padStart(2, '0');
+        }
+
+        function formatDateISO(date) {
+          return date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+        }
+
+        function formatDateFile(date) {
+          return formatDateISO(date);
+        }
+
+        // Cleanup
+        window.addEventListener('beforeunload', function() {
+          if (syncInterval) {
+            clearInterval(syncInterval);
+          }
+        });
+      </xhtml:script>
+    </xhtml:div>
+  </foreignObject>
 </svg>

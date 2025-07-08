@@ -1,606 +1,597 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-  <!-- Manifest PWA -->
-  <defs>
-    <style>
-      .container {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      }
-      .form-container {
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        margin: 10px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      }
-      .form-group {
-        margin-bottom: 15px;
-      }
-      .form-label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: 600;
-        color: #374151;
-        font-size: 14px;
-      }
-      .form-input, .form-select, .form-textarea {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #d1d5db;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: border-color 0.2s;
-        box-sizing: border-box;
-      }
-      .form-input:focus, .form-select:focus, .form-textarea:focus {
-        outline: none;
-        border-color: #2563eb;
-      }
-      .form-textarea {
-        resize: vertical;
-        min-height: 80px;
-      }
-      .btn {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        transition: transform 0.2s;
-      }
-      .btn:hover {
-        transform: translateY(-2px);
-      }
-      .btn-success {
-        background: linear-gradient(135deg, #10b981, #059669);
-      }
-      .btn-danger {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-      }
-      .btn-warning {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-      }
-      .stats-card {
-        background: #f0f9ff;
-        border: 2px solid #bae6fd;
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        margin: 5px;
-      }
-      .stat-value {
-        font-size: 24px;
-        font-weight: bold;
-        color: #0369a1;
-      }
-      .stat-label {
-        font-size: 12px;
-        color: #0369a1;
-        margin-top: 5px;
-      }
-      .entries-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-      .entries-table th {
-        background: #f1f5f9;
-        padding: 10px;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 2px solid #e2e8f0;
-        font-size: 12px;
-      }
-      .entries-table td {
-        padding: 8px 10px;
-        border-bottom: 1px solid #e2e8f0;
-        font-size: 12px;
-      }
-      .entries-table tr:hover {
-        background: #f8fafc;
-      }
-      .btn-small {
-        padding: 4px 8px;
-        font-size: 12px;
-        margin-right: 5px;
-      }
-      .sync-status {
-        background: #ecfdf5;
-        border: 1px solid #10b981;
-        border-radius: 5px;
-        padding: 8px;
-        margin: 10px 0;
-        font-size: 12px;
-        color: #059669;
-      }
-      .form-row {
-        display: flex;
-        gap: 15px;
-      }
-      .form-row .form-group {
-        flex: 1;
-      }
-    </style>
-  </defs>
-
-  <!-- Nagłówek -->
-  <rect fill="url(#headerGrad)" x="0" y="0" width="800" height="80" rx="0"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" viewBox="0 0 800 1200" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <!-- Nagłówek SVG -->
   <defs>
     <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#2563eb"/>
       <stop offset="100%" style="stop-color:#1d4ed8"/>
     </linearGradient>
   </defs>
-  <text x="400" y="30" text-anchor="middle" fill="white" font-size="24" font-weight="bold">📊 Ewidencja Dzienna</text>
-  <text x="400" y="55" text-anchor="middle" fill="white" font-size="14" opacity="0.9">Dokumentacja B+R - IP BOX</text>
+  
+  <rect fill="url(#headerGrad)" x="0" y="0" width="800" height="80"/>
+  <text x="400" y="35" text-anchor="middle" fill="white" font-size="24" font-weight="bold">📊 Ewidencja Dzienna</text>
+  <text x="400" y="60" text-anchor="middle" fill="white" font-size="14" opacity="0.9">Dokumentacja B+R - IP BOX</text>
 
-  <!-- Statystyki -->
-  <foreignObject x="20" y="90" width="760" height="80">
-    <div class="container" style="display: flex; gap: 10px;">
-      <div class="stats-card" style="flex: 1;">
-        <div class="stat-value" id="todayHours">0.0</div>
-        <div class="stat-label">Godzin dzisiaj</div>
-      </div>
-      <div class="stats-card" style="flex: 1;">
-        <div class="stat-value" id="todayEntries">0</div>
-        <div class="stat-label">Wpisów dzisiaj</div>
-      </div>
-      <div class="stats-card" style="flex: 1;">
-        <div class="stat-value" id="totalEntries">0</div>
-        <div class="stat-label">Łącznie wpisów</div>
-      </div>
-    </div>
-  </foreignObject>
-
-  <!-- Formularz -->
-  <foreignObject x="20" y="180" width="760" height="350">
-    <div class="form-container container">
-      <h3 style="margin-top: 0; color: #1e293b;">➕ Dodaj/Edytuj wpis</h3>
+  <!-- Główna aplikacja HTML -->
+  <foreignObject x="0" y="80" width="800" height="1120">
+    <xhtml:div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; height: 100%; box-sizing: border-box;">
       
-      <div class="sync-status" id="syncStatus">
-        🔄 Automatyczna synchronizacja z przeglądarką tygodniową: AKTYWNA
-      </div>
+      <!-- Stylowanie CSS -->
+      <xhtml:style>
+        .app-container {
+          max-width: 760px;
+          margin: 0 auto;
+        }
+        .card {
+          background: white;
+          border-radius: 15px;
+          padding: 20px;
+          margin-bottom: 20px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .stats-grid {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 20px;
+        }
+        .stat-card {
+          flex: 1;
+          background: #f0f9ff;
+          border: 2px solid #bae6fd;
+          border-radius: 10px;
+          padding: 15px;
+          text-align: center;
+        }
+        .stat-value {
+          font-size: 24px;
+          font-weight: bold;
+          color: #0369a1;
+        }
+        .stat-label {
+          font-size: 12px;
+          color: #0369a1;
+          margin-top: 5px;
+        }
+        .form-title {
+          font-size: 18px;
+          font-weight: bold;
+          color: #1e293b;
+          margin-bottom: 15px;
+        }
+        .form-row {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 15px;
+        }
+        .form-group {
+          flex: 1;
+        }
+        .form-label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: #374151;
+          font-size: 14px;
+        }
+        .form-input, .form-select, .form-textarea {
+          width: 100%;
+          padding: 12px;
+          border: 2px solid #d1d5db;
+          border-radius: 8px;
+          font-size: 16px;
+          box-sizing: border-box;
+          transition: border-color 0.2s;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+          outline: none;
+          border-color: #2563eb;
+        }
+        .form-textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+        .btn {
+          background: linear-gradient(135deg, #2563eb, #1d4ed8);
+          color: white;
+          border: none;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          transition: transform 0.2s;
+        }
+        .btn:hover {
+          transform: translateY(-2px);
+        }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .btn-small { padding: 6px 12px; font-size: 12px; }
+        .sync-status {
+          background: #ecfdf5;
+          border: 1px solid #10b981;
+          border-radius: 8px;
+          padding: 12px;
+          margin-bottom: 15px;
+          font-size: 14px;
+          color: #059669;
+        }
+        .entries-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        .entries-table th {
+          background: #f1f5f9;
+          padding: 12px;
+          text-align: left;
+          font-weight: 600;
+          border-bottom: 2px solid #e2e8f0;
+          font-size: 14px;
+        }
+        .entries-table td {
+          padding: 10px 12px;
+          border-bottom: 1px solid #e2e8f0;
+          font-size: 13px;
+        }
+        .entries-table tr:hover {
+          background: #f8fafc;
+        }
+        .category-badge {
+          background: #e0f2fe;
+          color: #0369a1;
+          padding: 3px 8px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: bold;
+        }
+        .empty-state {
+          text-align: center;
+          color: #64748b;
+          padding: 40px;
+          font-style: italic;
+        }
+        .notification {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 1000;
+          padding: 12px 20px;
+          border-radius: 8px;
+          color: white;
+          font-size: 14px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          transition: opacity 0.3s;
+        }
+        .notification-success { background: #10b981; }
+        .notification-error { background: #ef4444; }
+      </xhtml:style>
 
-      <form id="entryForm">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Data:</label>
-            <input type="date" id="entryDate" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Godzina rozpoczęcia:</label>
-            <select id="startTime" class="form-select" required>
-              <option value="">Wybierz godzinę</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Godzina zakończenia:</label>
-            <select id="endTime" class="form-select" required>
-              <option value="">Wybierz godzinę</option>
-            </select>
-          </div>
-        </div>
+      <xhtml:div class="app-container">
+        
+        <!-- Statystyki -->
+        <xhtml:div class="stats-grid">
+          <xhtml:div class="stat-card">
+            <xhtml:div class="stat-value" id="todayHours">0.0</xhtml:div>
+            <xhtml:div class="stat-label">Godzin dzisiaj</xhtml:div>
+          </xhtml:div>
+          <xhtml:div class="stat-card">
+            <xhtml:div class="stat-value" id="todayEntries">0</xhtml:div>
+            <xhtml:div class="stat-label">Wpisów dzisiaj</xhtml:div>
+          </xhtml:div>
+          <xhtml:div class="stat-card">
+            <xhtml:div class="stat-value" id="totalEntries">0</xhtml:div>
+            <xhtml:div class="stat-label">Łącznie wpisów</xhtml:div>
+          </xhtml:div>
+        </xhtml:div>
 
-        <div class="form-group">
-          <label class="form-label">Kategoria działalności:</label>
-          <select id="category" class="form-select" required>
-            <option value="">Wybierz kategorię</option>
-            <option value="Badania i rozwój">Badania i rozwój</option>
-            <option value="Projektowanie">Projektowanie</option>
-            <option value="Programowanie">Programowanie</option>
-            <option value="Testowanie">Testowanie</option>
-            <option value="Dokumentacja">Dokumentacja</option>
-            <option value="Spotkania B+R">Spotkania B+R</option>
-            <option value="Analiza">Analiza</option>
-            <option value="Prototypowanie">Prototypowanie</option>
-            <option value="Optymalizacja">Optymalizacja</option>
-            <option value="Inne B+R">Inne B+R</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group" style="flex: 2;">
-            <label class="form-label">Opis czynności:</label>
-            <textarea id="description" class="form-textarea" placeholder="Szczegółowy opis wykonywanej pracy badawczo-rozwojowej..." required></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Projekt/Produkt:</label>
-            <input type="text" id="project" class="form-input" placeholder="Nazwa projektu">
-          </div>
-        </div>
-
-        <div style="margin-top: 20px;">
-          <button type="submit" class="btn" id="submitBtn">Dodaj wpis</button>
-          <button type="button" class="btn btn-success" onclick="exportDay()">📊 Eksport dnia (CSV)</button>
-          <button type="button" class="btn btn-success" onclick="exportDayJSON()">📄 Eksport dnia (JSON)</button>
-          <button type="button" class="btn btn-warning" onclick="syncWithWeekly()">🔄 Synchronizuj</button>
-          <button type="button" class="btn btn-danger" onclick="clearForm()">Wyczyść</button>
-        </div>
-      </form>
-    </div>
-  </foreignObject>
-
-  <!-- Lista wpisów -->
-  <foreignObject x="20" y="540" width="760" height="440">
-    <div class="form-container container">
-      <h3 style="margin-top: 0; color: #1e293b;">📋 Wpisy z dnia: <span id="currentDateLabel"></span></h3>
-      
-      <div id="entriesContainer">
-        <div style="text-align: center; color: #64748b; padding: 40px;">
-          <p>Brak wpisów na wybrany dzień</p>
-        </div>
-      </div>
-    </div>
-  </foreignObject>
-
-  <!-- JavaScript -->
-  <script><![CDATA[
-    let entries = [];
-    let editingId = null;
-    let currentDate = new Date().toISOString().split('T')[0];
-
-    // Inicjalizacja
-    document.addEventListener('DOMContentLoaded', function() {
-      initializeApp();
-    });
-
-    function initializeApp() {
-      setupTimeOptions();
-      setCurrentDate();
-      loadEntries();
-      setupEventListeners();
-      renderEntries();
-      updateStats();
-      updateSyncStatus();
-      
-      // Auto-sync co 30 sekund
-      setInterval(syncWithWeekly, 30000);
-    }
-
-    function setupTimeOptions() {
-      const startSelect = document.getElementById('startTime');
-      const endSelect = document.getElementById('endTime');
-      
-      // Generowanie opcji co 15 minut od 06:00 do 23:45
-      for (let hour = 6; hour <= 23; hour++) {
-        for (let minute = 0; minute < 60; minute += 15) {
-          const timeStr = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        <!-- Formularz -->
+        <xhtml:div class="card">
+          <xhtml:h3 class="form-title">➕ Dodaj/Edytuj wpis</xhtml:h3>
           
-          const startOption = document.createElement('option');
-          startOption.value = timeStr;
-          startOption.textContent = timeStr;
-          startSelect.appendChild(startOption);
+          <xhtml:div class="sync-status" id="syncStatus">
+            🔄 Automatyczna synchronizacja z przeglądarką tygodniową: AKTYWNA
+          </xhtml:div>
+
+          <xhtml:form id="entryForm">
+            <xhtml:div class="form-row">
+              <xhtml:div class="form-group">
+                <xhtml:label class="form-label">Data:</xhtml:label>
+                <xhtml:input type="date" id="entryDate" class="form-input" required="required" />
+              </xhtml:div>
+              <xhtml:div class="form-group">
+                <xhtml:label class="form-label">Godzina rozpoczęcia:</xhtml:label>
+                <xhtml:select id="startTime" class="form-select" required="required">
+                  <xhtml:option value="">Wybierz godzinę</xhtml:option>
+                </xhtml:select>
+              </xhtml:div>
+              <xhtml:div class="form-group">
+                <xhtml:label class="form-label">Godzina zakończenia:</xhtml:label>
+                <xhtml:select id="endTime" class="form-select" required="required">
+                  <xhtml:option value="">Wybierz godzinę</xhtml:option>
+                </xhtml:select>
+              </xhtml:div>
+            </xhtml:div>
+
+            <xhtml:div class="form-group">
+              <xhtml:label class="form-label">Kategoria działalności:</xhtml:label>
+              <xhtml:select id="category" class="form-select" required="required">
+                <xhtml:option value="">Wybierz kategorię</xhtml:option>
+                <xhtml:option value="Badania i rozwój">Badania i rozwój</xhtml:option>
+                <xhtml:option value="Projektowanie">Projektowanie</xhtml:option>
+                <xhtml:option value="Programowanie">Programowanie</xhtml:option>
+                <xhtml:option value="Testowanie">Testowanie</xhtml:option>
+                <xhtml:option value="Dokumentacja">Dokumentacja</xhtml:option>
+                <xhtml:option value="Spotkania B+R">Spotkania B+R</xhtml:option>
+                <xhtml:option value="Analiza">Analiza</xhtml:option>
+                <xhtml:option value="Prototypowanie">Prototypowanie</xhtml:option>
+                <xhtml:option value="Optymalizacja">Optymalizacja</xhtml:option>
+                <xhtml:option value="Inne B+R">Inne B+R</xhtml:option>
+              </xhtml:select>
+            </xhtml:div>
+
+            <xhtml:div class="form-row">
+              <xhtml:div class="form-group" style="flex: 2;">
+                <xhtml:label class="form-label">Opis czynności:</xhtml:label>
+                <xhtml:textarea id="description" class="form-textarea" placeholder="Szczegółowy opis wykonywanej pracy badawczo-rozwojowej..." required="required"></xhtml:textarea>
+              </xhtml:div>
+              <xhtml:div class="form-group">
+                <xhtml:label class="form-label">Projekt/Produkt:</xhtml:label>
+                <xhtml:input type="text" id="project" class="form-input" placeholder="Nazwa projektu" />
+              </xhtml:div>
+            </xhtml:div>
+
+            <xhtml:div style="margin-top: 20px;">
+              <xhtml:button type="submit" class="btn" id="submitBtn">Dodaj wpis</xhtml:button>
+              <xhtml:button type="button" class="btn btn-success" onclick="exportDay()">📊 Eksport CSV</xhtml:button>
+              <xhtml:button type="button" class="btn btn-success" onclick="exportDayJSON()">📄 Eksport JSON</xhtml:button>
+              <xhtml:button type="button" class="btn" onclick="syncWithWeekly()">🔄 Sync</xhtml:button>
+              <xhtml:button type="button" class="btn btn-danger" onclick="clearForm()">Wyczyść</xhtml:button>
+            </xhtml:div>
+          </xhtml:form>
+        </xhtml:div>
+
+        <!-- Lista wpisów -->
+        <xhtml:div class="card">
+          <xhtml:h3 class="form-title">📋 Wpisy z dnia: <xhtml:span id="currentDateLabel"></xhtml:span></xhtml:h3>
+          <xhtml:div id="entriesContainer">
+            <xhtml:div class="empty-state">Brak wpisów na wybrany dzień</xhtml:div>
+          </xhtml:div>
+        </xhtml:div>
+      </xhtml:div>
+
+      <!-- JavaScript -->
+      <xhtml:script>
+        let entries = [];
+        let editingId = null;
+        let currentDate = new Date().toISOString().split('T')[0];
+
+        // Inicjalizacja przy ładowaniu
+        window.addEventListener('load', function() {
+          initializeApp();
+        });
+
+        function initializeApp() {
+          setupTimeOptions();
+          setCurrentDate();
+          loadEntries();
+          setupEventListeners();
+          renderEntries();
+          updateStats();
+          updateSyncStatus();
           
-          const endOption = document.createElement('option');
-          endOption.value = timeStr;
-          endOption.textContent = timeStr;
-          endSelect.appendChild(endOption);
+          // Auto-sync co 30 sekund
+          setInterval(syncWithWeekly, 30000);
         }
-      }
-    }
 
-    function setCurrentDate() {
-      document.getElementById('entryDate').value = currentDate;
-      document.getElementById('currentDateLabel').textContent = formatDate(currentDate);
-    }
-
-    function setupEventListeners() {
-      document.getElementById('entryForm').addEventListener('submit', handleSubmit);
-      document.getElementById('entryDate').addEventListener('change', function(e) {
-        currentDate = e.target.value;
-        document.getElementById('currentDateLabel').textContent = formatDate(currentDate);
-        renderEntries();
-        updateStats();
-      });
-    }
-
-    function handleSubmit(e) {
-      e.preventDefault();
-      
-      const formData = {
-        date: document.getElementById('entryDate').value,
-        startTime: document.getElementById('startTime').value,
-        endTime: document.getElementById('endTime').value,
-        category: document.getElementById('category').value,
-        description: document.getElementById('description').value,
-        project: document.getElementById('project').value
-      };
-
-      if (!validateForm(formData)) return;
-
-      const duration = calculateDuration(formData.startTime, formData.endTime);
-      if (duration <= 0) {
-        alert('Godzina zakończenia musi być późniejsza niż rozpoczęcia!');
-        return;
-      }
-
-      const entry = {
-        id: editingId || Date.now(),
-        ...formData,
-        duration: duration.toFixed(2),
-        created: new Date().toISOString(),
-        lastModified: new Date().toISOString()
-      };
-
-      if (editingId) {
-        const index = entries.findIndex(e => e.id === editingId);
-        entries[index] = entry;
-        editingId = null;
-        document.getElementById('submitBtn').textContent = 'Dodaj wpis';
-      } else {
-        entries.push(entry);
-      }
-
-      saveEntries();
-      renderEntries();
-      updateStats();
-      clearForm();
-      syncWithWeekly();
-      
-      // Sukces
-      showNotification('Wpis został zapisany!', 'success');
-    }
-
-    function validateForm(data) {
-      if (!data.date || !data.startTime || !data.endTime || !data.category || !data.description.trim()) {
-        alert('Proszę wypełnić wszystkie wymagane pola!');
-        return false;
-      }
-      return true;
-    }
-
-    function calculateDuration(start, end) {
-      const startTime = new Date(`2000-01-01T${start}`);
-      const endTime = new Date(`2000-01-01T${end}`);
-      return (endTime - startTime) / (1000 * 60 * 60);
-    }
-
-    function loadEntries() {
-      const stored = localStorage.getItem('dailyTimeEntries');
-      if (stored) {
-        entries = JSON.parse(stored);
-      }
-    }
-
-    function saveEntries() {
-      localStorage.setItem('dailyTimeEntries', JSON.stringify(entries));
-      
-      // Export metadata
-      const metadata = {
-        lastUpdate: new Date().toISOString(),
-        totalEntries: entries.length,
-        version: '1.0'
-      };
-      localStorage.setItem('dailyTimeEntries_meta', JSON.stringify(metadata));
-    }
-
-    function renderEntries() {
-      const container = document.getElementById('entriesContainer');
-      const todayEntries = entries.filter(e => e.date === currentDate);
-
-      if (todayEntries.length === 0) {
-        container.innerHTML = `
-          <div style="text-align: center; color: #64748b; padding: 40px;">
-            <p>Brak wpisów na dzień: ${formatDate(currentDate)}</p>
-          </div>
-        `;
-        return;
-      }
-
-      const sortedEntries = todayEntries.sort((a, b) => a.startTime.localeCompare(b.startTime));
-
-      container.innerHTML = `
-        <table class="entries-table">
-          <thead>
-            <tr>
-              <th>Godziny</th>
-              <th>Czas</th>
-              <th>Kategoria</th>
-              <th>Opis</th>
-              <th>Projekt</th>
-              <th>Akcje</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${sortedEntries.map(entry => `
-              <tr>
-                <td><strong>${entry.startTime} - ${entry.endTime}</strong></td>
-                <td><span style="color: #059669; font-weight: bold;">${entry.duration}h</span></td>
-                <td><span style="background: #e0f2fe; padding: 2px 6px; border-radius: 4px; font-size: 11px;">${entry.category}</span></td>
-                <td>${entry.description.length > 50 ? entry.description.substring(0, 50) + '...' : entry.description}</td>
-                <td>${entry.project || '-'}</td>
-                <td>
-                  <button class="btn btn-small btn-success" onclick="editEntry(${entry.id})">Edytuj</button>
-                  <button class="btn btn-small btn-danger" onclick="deleteEntry(${entry.id})">Usuń</button>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      `;
-    }
-
-    function editEntry(id) {
-      const entry = entries.find(e => e.id === id);
-      if (!entry) return;
-
-      editingId = id;
-      document.getElementById('entryDate').value = entry.date;
-      document.getElementById('startTime').value = entry.startTime;
-      document.getElementById('endTime').value = entry.endTime;
-      document.getElementById('category').value = entry.category;
-      document.getElementById('description').value = entry.description;
-      document.getElementById('project').value = entry.project;
-      
-      document.getElementById('submitBtn').textContent = 'Aktualizuj wpis';
-      
-      // Scroll do formularza
-      document.getElementById('entryForm').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function deleteEntry(id) {
-      if (confirm('Czy na pewno chcesz usunąć ten wpis?')) {
-        entries = entries.filter(e => e.id !== id);
-        saveEntries();
-        renderEntries();
-        updateStats();
-        syncWithWeekly();
-        showNotification('Wpis został usunięty!', 'success');
-      }
-    }
-
-    function clearForm() {
-      document.getElementById('entryForm').reset();
-      document.getElementById('entryDate').value = currentDate;
-      editingId = null;
-      document.getElementById('submitBtn').textContent = 'Dodaj wpis';
-    }
-
-    function updateStats() {
-      const todayEntries = entries.filter(e => e.date === currentDate);
-      const todayHours = todayEntries.reduce((sum, e) => sum + parseFloat(e.duration), 0);
-      
-      document.getElementById('todayHours').textContent = todayHours.toFixed(1);
-      document.getElementById('todayEntries').textContent = todayEntries.length;
-      document.getElementById('totalEntries').textContent = entries.length;
-    }
-
-    function exportDay() {
-      const todayEntries = entries.filter(e => e.date === currentDate);
-      if (todayEntries.length === 0) {
-        alert('Brak wpisów do eksportu!');
-        return;
-      }
-
-      const headers = ['Data', 'Godzina rozpoczęcia', 'Godzina zakończenia', 'Czas trwania (h)', 'Kategoria', 'Opis czynności', 'Projekt', 'Data utworzenia'];
-      const csvData = todayEntries.map(entry => [
-        entry.date,
-        entry.startTime,
-        entry.endTime,
-        entry.duration,
-        entry.category,
-        `"${entry.description.replace(/"/g, '""')}"`,
-        entry.project || '',
-        entry.created
-      ]);
-
-      const csvContent = [headers, ...csvData]
-        .map(row => row.join(','))
-        .join('\n');
-
-      downloadFile(csvContent, `ewidencja-${currentDate}.csv`, 'text/csv');
-      showNotification('Eksport CSV zakończony!', 'success');
-    }
-
-    function exportDayJSON() {
-      const todayEntries = entries.filter(e => e.date === currentDate);
-      if (todayEntries.length === 0) {
-        alert('Brak wpisów do eksportu!');
-        return;
-      }
-
-      const exportData = {
-        metadata: {
-          exportDate: new Date().toISOString(),
-          targetDate: currentDate,
-          totalEntries: todayEntries.length,
-          totalHours: todayEntries.reduce((sum, e) => sum + parseFloat(e.duration), 0).toFixed(2),
-          version: '1.0'
-        },
-        entries: todayEntries
-      };
-
-      const jsonContent = JSON.stringify(exportData, null, 2);
-      downloadFile(jsonContent, `ewidencja-${currentDate}.json`, 'application/json');
-      showNotification('Eksport JSON zakończony!', 'success');
-    }
-
-    function syncWithWeekly() {
-      try {
-        // Zapisz dane w formacie dla przeglądarki tygodniowej
-        localStorage.setItem('weeklyTimeEntries', JSON.stringify(entries));
-        
-        // Metadata synchronizacji
-        const syncData = {
-          lastSync: new Date().toISOString(),
-          entriesCount: entries.length,
-          source: 'daily_tracker'
-        };
-        localStorage.setItem('sync_metadata', JSON.stringify(syncData));
-        
-        updateSyncStatus();
-        return true;
-      } catch (error) {
-        console.error('Błąd synchronizacji:', error);
-        return false;
-      }
-    }
-
-    function updateSyncStatus() {
-      const syncMeta = localStorage.getItem('sync_metadata');
-      const statusElement = document.getElementById('syncStatus');
-      
-      if (syncMeta) {
-        const data = JSON.parse(syncMeta);
-        const lastSync = new Date(data.lastSync);
-        const timeAgo = Math.round((new Date() - lastSync) / 1000);
-        
-        if (timeAgo < 60) {
-          statusElement.innerHTML = `🟢 Ostatnia synchronizacja: ${timeAgo}s temu (${data.entriesCount} wpisów)`;
-        } else {
-          statusElement.innerHTML = `🔄 Ostatnia synchronizacja: ${Math.round(timeAgo/60)}min temu (${data.entriesCount} wpisów)`;
+        function setupTimeOptions() {
+          const startSelect = document.getElementById('startTime');
+          const endSelect = document.getElementById('endTime');
+          
+          // Generowanie opcji co 15 minut od 06:00 do 23:45
+          for (let hour = 6; hour &lt;= 23; hour++) {
+            for (let minute = 0; minute &lt; 60; minute += 15) {
+              const timeStr = hour.toString().padStart(2, '0') + ':' + minute.toString().padStart(2, '0');
+              
+              const startOption = document.createElement('option');
+              startOption.value = timeStr;
+              startOption.textContent = timeStr;
+              startSelect.appendChild(startOption);
+              
+              const endOption = document.createElement('option');
+              endOption.value = timeStr;
+              endOption.textContent = timeStr;
+              endSelect.appendChild(endOption);
+            }
+          }
         }
-      } else {
-        statusElement.innerHTML = `🔄 Brak synchronizacji - kliknij "Synchronizuj"`;
-      }
-    }
 
-    function downloadFile(content, filename, contentType) {
-      const blob = new Blob([content], { type: contentType + ';charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
-
-    function showNotification(message, type = 'info') {
-      // Prosta notyfikacja
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; z-index: 1000;
-        background: ${type === 'success' ? '#10b981' : '#2563eb'};
-        color: white; padding: 12px 20px; border-radius: 8px;
-        font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      `;
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
+        function setCurrentDate() {
+          document.getElementById('entryDate').value = currentDate;
+          document.getElementById('currentDateLabel').textContent = formatDate(currentDate);
         }
-      }, 3000);
-    }
 
-    function formatDate(dateStr) {
-      return new Date(dateStr).toLocaleDateString('pl-PL', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    }
+        function setupEventListeners() {
+          document.getElementById('entryForm').addEventListener('submit', handleSubmit);
+          document.getElementById('entryDate').addEventListener('change', function(e) {
+            currentDate = e.target.value;
+            document.getElementById('currentDateLabel').textContent = formatDate(currentDate);
+            renderEntries();
+            updateStats();
+          });
+        }
 
-    // PWA Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('data:text/javascript,console.log("SW registered")');
-    }
-  ]]></script>
+        function handleSubmit(e) {
+          e.preventDefault();
+          
+          const formData = {
+            date: document.getElementById('entryDate').value,
+            startTime: document.getElementById('startTime').value,
+            endTime: document.getElementById('endTime').value,
+            category: document.getElementById('category').value,
+            description: document.getElementById('description').value,
+            project: document.getElementById('project').value
+          };
+
+          if (!validateForm(formData)) return;
+
+          const duration = calculateDuration(formData.startTime, formData.endTime);
+          if (duration <= 0) {
+            showNotification('Godzina zakończenia musi być późniejsza niż rozpoczęcia!', 'error');
+            return;
+          }
+
+          const entry = {
+            id: editingId || Date.now(),
+            ...formData,
+            duration: duration.toFixed(2),
+            created: new Date().toISOString(),
+            lastModified: new Date().toISOString()
+          };
+
+          if (editingId) {
+            const index = entries.findIndex(e => e.id === editingId);
+            entries[index] = entry;
+            editingId = null;
+            document.getElementById('submitBtn').textContent = 'Dodaj wpis';
+          } else {
+            entries.push(entry);
+          }
+
+          saveEntries();
+          renderEntries();
+          updateStats();
+          clearForm();
+          syncWithWeekly();
+          
+          showNotification('Wpis został zapisany!', 'success');
+        }
+
+        function validateForm(data) {
+          if (!data.date || !data.startTime || !data.endTime || !data.category || !data.description.trim()) {
+            showNotification('Proszę wypełnić wszystkie wymagane pola!', 'error');
+            return false;
+          }
+          return true;
+        }
+
+        function calculateDuration(start, end) {
+          const startTime = new Date('2000-01-01T' + start);
+          const endTime = new Date('2000-01-01T' + end);
+          return (endTime - startTime) / (1000 * 60 * 60);
+        }
+
+        function loadEntries() {
+          const stored = localStorage.getItem('dailyTimeEntries');
+          if (stored) {
+            entries = JSON.parse(stored);
+          }
+        }
+
+        function saveEntries() {
+          localStorage.setItem('dailyTimeEntries', JSON.stringify(entries));
+          
+          const metadata = {
+            lastUpdate: new Date().toISOString(),
+            totalEntries: entries.length,
+            version: '1.0'
+          };
+          localStorage.setItem('dailyTimeEntries_meta', JSON.stringify(metadata));
+        }
+
+        function renderEntries() {
+          const container = document.getElementById('entriesContainer');
+          const todayEntries = entries.filter(e => e.date === currentDate);
+
+          if (todayEntries.length === 0) {
+            container.innerHTML = '<div class="empty-state">Brak wpisów na dzień: ' + formatDate(currentDate) + '</div>';
+            return;
+          }
+
+          const sortedEntries = todayEntries.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
+          let tableHTML = '<table class="entries-table"><thead><tr>';
+          tableHTML += '<th>Godziny</th><th>Czas</th><th>Kategoria</th><th>Opis</th><th>Projekt</th><th>Akcje</th>';
+          tableHTML += '</tr></thead><tbody>';
+
+          sortedEntries.forEach(entry =&gt; {
+            tableHTML += '<tr>';
+            tableHTML += '<td><strong>' + entry.startTime + ' - ' + entry.endTime + '</strong></td>';
+            tableHTML += '<td><span style="color: #059669; font-weight: bold;">' + entry.duration + 'h</span></td>';
+            tableHTML += '<td><span class="category-badge">' + entry.category + '</span></td>';
+            tableHTML += '&lt;td&gt;' + (entry.description.length &gt; 50 ? entry.description.substring(0, 50) + '...' : entry.description) + '&lt;/td&gt;';
+            tableHTML += '<td>' + (entry.project || '-') + '</td>';
+            tableHTML += '<td>';
+            tableHTML += '<button class="btn btn-small btn-success" onclick="editEntry(' + entry.id + ')">Edytuj</button>';
+            tableHTML += '<button class="btn btn-small btn-danger" onclick="deleteEntry(' + entry.id + ')">Usuń</button>';
+            tableHTML += '</td>';
+            tableHTML += '</tr>';
+          });
+
+          tableHTML += '</tbody></table>';
+          container.innerHTML = tableHTML;
+        }
+
+        function editEntry(id) {
+          const entry = entries.find(e => e.id === id);
+          if (!entry) return;
+
+          editingId = id;
+          document.getElementById('entryDate').value = entry.date;
+          document.getElementById('startTime').value = entry.startTime;
+          document.getElementById('endTime').value = entry.endTime;
+          document.getElementById('category').value = entry.category;
+          document.getElementById('description').value = entry.description;
+          document.getElementById('project').value = entry.project;
+          
+          document.getElementById('submitBtn').textContent = 'Aktualizuj wpis';
+        }
+
+        function deleteEntry(id) {
+          if (confirm('Czy na pewno chcesz usunąć ten wpis?')) {
+            entries = entries.filter(e => e.id !== id);
+            saveEntries();
+            renderEntries();
+            updateStats();
+            syncWithWeekly();
+            showNotification('Wpis został usunięty!', 'success');
+          }
+        }
+
+        function clearForm() {
+          document.getElementById('entryForm').reset();
+          document.getElementById('entryDate').value = currentDate;
+          editingId = null;
+          document.getElementById('submitBtn').textContent = 'Dodaj wpis';
+        }
+
+        function updateStats() {
+          const todayEntries = entries.filter(e => e.date === currentDate);
+          const todayHours = todayEntries.reduce((sum, e) =&gt; sum + parseFloat(e.duration), 0);
+          
+          document.getElementById('todayHours').textContent = todayHours.toFixed(1);
+          document.getElementById('todayEntries').textContent = todayEntries.length;
+          document.getElementById('totalEntries').textContent = entries.length;
+        }
+
+        function exportDay() {
+          const todayEntries = entries.filter(e => e.date === currentDate);
+          if (todayEntries.length === 0) {
+            showNotification('Brak wpisów do eksportu!', 'error');
+            return;
+          }
+
+          const headers = ['Data', 'Godzina rozpoczęcia', 'Godzina zakończenia', 'Czas trwania (h)', 'Kategoria', 'Opis czynności', 'Projekt', 'Data utworzenia'];
+          const csvData = todayEntries.map(entry =&gt; [
+            entry.date,
+            entry.startTime,
+            entry.endTime,
+            entry.duration,
+            entry.category,
+            '"' + entry.description.replace(/"/g, '""') + '"',
+            entry.project || '',
+            entry.created
+          ]);
+
+          const csvContent = [headers, ...csvData].map(row =&gt; row.join(',')).join('\n');
+          downloadFile(csvContent, 'ewidencja-' + currentDate + '.csv', 'text/csv');
+          showNotification('Eksport CSV zakończony!', 'success');
+        }
+
+        function exportDayJSON() {
+          const todayEntries = entries.filter(e => e.date === currentDate);
+          if (todayEntries.length === 0) {
+            showNotification('Brak wpisów do eksportu!', 'error');
+            return;
+          }
+
+          const exportData = {
+            metadata: {
+              exportDate: new Date().toISOString(),
+              targetDate: currentDate,
+              totalEntries: todayEntries.length,
+              totalHours: todayEntries.reduce((sum, e) =&gt; sum + parseFloat(e.duration), 0).toFixed(2),
+              version: '1.0'
+            },
+            entries: todayEntries
+          };
+
+          const jsonContent = JSON.stringify(exportData, null, 2);
+          downloadFile(jsonContent, 'ewidencja-' + currentDate + '.json', 'application/json');
+          showNotification('Eksport JSON zakończony!', 'success');
+        }
+
+        function syncWithWeekly() {
+          try {
+            localStorage.setItem('weeklyTimeEntries', JSON.stringify(entries));
+            
+            const syncData = {
+              lastSync: new Date().toISOString(),
+              entriesCount: entries.length,
+              source: 'daily_tracker'
+            };
+            localStorage.setItem('sync_metadata', JSON.stringify(syncData));
+            
+            updateSyncStatus();
+            return true;
+          } catch (error) {
+            console.error('Błąd synchronizacji:', error);
+            return false;
+          }
+        }
+
+        function updateSyncStatus() {
+          const syncMeta = localStorage.getItem('sync_metadata');
+          const statusElement = document.getElementById('syncStatus');
+          
+          if (syncMeta) {
+            const data = JSON.parse(syncMeta);
+            const lastSync = new Date(data.lastSync);
+            const timeAgo = Math.round((new Date() - lastSync) / 1000);
+            
+            if (timeAgo &lt; 60) {
+              statusElement.innerHTML = '🟢 Ostatnia synchronizacja: ' + timeAgo + 's temu (' + data.entriesCount + ' wpisów)';
+            } else {
+              statusElement.innerHTML = '🔄 Ostatnia synchronizacja: ' + Math.round(timeAgo/60) + 'min temu (' + data.entriesCount + ' wpisów)';
+            }
+          } else {
+            statusElement.innerHTML = '🔄 Brak synchronizacji - kliknij "Sync"';
+          }
+        }
+
+        function downloadFile(content, filename, contentType) {
+          const blob = new Blob([content], { type: contentType + ';charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }
+
+        function showNotification(message, type) {
+          const notification = document.createElement('div');
+          notification.className = 'notification notification-' + (type || 'success');
+          notification.textContent = message;
+          document.body.appendChild(notification);
+          
+          setTimeout(function() {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 3000);
+        }
+
+        function formatDate(dateStr) {
+          return new Date(dateStr).toLocaleDateString('pl-PL', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+        }
+      </xhtml:script>
+    </xhtml:div>
+  </foreignObject>
 </svg>
